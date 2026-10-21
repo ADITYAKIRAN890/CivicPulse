@@ -194,6 +194,123 @@ class LocalDatabase {
     }
   }
 
+  async addPerson(params: {
+    fullName: string;
+    email: string;
+    role: UserRole;
+    rollNumber?: string;
+    department?: string;
+    clinicCabin?: string;
+    avatarUrl?: string;
+    specialization?: string;
+    qualification?: string;
+    bio?: string;
+    consultationHours?: string;
+  }): Promise<{ user: UserProfile; doctor?: Doctor }> {
+    const release = await this.mutex.acquire();
+    try {
+      const emailLower = params.email.trim().toLowerCase();
+      const existing = this.data.users.find((u) => u.email.toLowerCase() === emailLower);
+      if (existing) {
+        throw new Error(`Person with email "${params.email}" already exists in the campus database.`);
+      }
+
+      const userId = `user-${params.role}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const avatarUrl =
+        params.avatarUrl ||
+        `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`;
+
+      const newUser: UserProfile = {
+        id: userId,
+        email: emailLower,
+        fullName: params.fullName.trim(),
+        role: params.role,
+        rollNumber: params.rollNumber?.trim().toUpperCase(),
+        department: params.department?.trim(),
+        clinicCabin: params.clinicCabin?.trim(),
+        avatarUrl,
+        isApproved: true,
+        createdAt: new Date().toISOString(),
+      };
+
+      this.data.users.push(newUser);
+
+      let createdDoctor: Doctor | undefined;
+
+      // If doctor, also insert into doctor directory so appointments can immediately be booked
+      if (params.role === 'doctor') {
+        createdDoctor = {
+          id: `doc-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          userId: newUser.id,
+          fullName: newUser.fullName,
+          specialization: params.specialization || 'General Physician & Campus Care',
+          qualification: params.qualification || 'MBBS',
+          clinicCabin: params.clinicCabin || newUser.clinicCabin || 'Cabin 108, Campus Health Center',
+          consultationHours: params.consultationHours || '09:00 AM - 01:00 PM',
+          bio: params.bio || 'Campus medical consultant and student care physician.',
+          activeDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          blockedDates: [],
+          avatarUrl,
+        };
+        this.data.doctors.push(createdDoctor);
+      }
+
+      // If student, initialize wallet and welcome points
+      if (params.role === 'student') {
+        this.data.wallets.push({
+          userId: newUser.id,
+          balance: 25,
+          lifetimeEarned: 25,
+          lifetimeSpent: 0,
+          updatedAt: new Date().toISOString(),
+        });
+
+        this.data.rewardLedger.push({
+          id: `ledg-${Date.now()}`,
+          idempotencyKey: `welcome_bonus_${newUser.id}`,
+          userId: newUser.id,
+          amount: 25,
+          balanceAfter: 25,
+          transactionType: 'admin_adjustment',
+          referenceId: 'sys-onboard',
+          description: 'Welcome to CivicsPulse! Verified Campus Member Bonus.',
+          createdAt: new Date().toISOString(),
+        });
+      }
+
+      this.saveData(this.data);
+      return { user: newUser, doctor: createdDoctor };
+    } finally {
+      release();
+    }
+  }
+
+  async deleteUser(userId: string): Promise<boolean> {
+    const release = await this.mutex.acquire();
+    try {
+      const userIndex = this.data.users.findIndex((u) => u.id === userId);
+      if (userIndex === -1) {
+        throw new Error('User not found in database.');
+      }
+      const user = this.data.users[userIndex];
+      this.data.users.splice(userIndex, 1);
+
+      // If doctor, also remove from doctors list
+      if (user.role === 'doctor') {
+        this.data.doctors = this.data.doctors.filter((d) => d.userId !== userId && d.id !== userId);
+      }
+
+      // Clean up notifications/wallet
+      this.data.wallets = this.data.wallets.filter((w) => w.userId !== userId);
+      this.data.notifications = this.data.notifications.filter((n) => n.userId !== userId);
+
+      this.saveData(this.data);
+      return true;
+    } finally {
+      release();
+    }
+  }
+
   async approveUser(userId: string): Promise<UserProfile> {
     const release = await this.mutex.acquire();
     try {

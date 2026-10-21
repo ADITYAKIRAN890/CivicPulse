@@ -18,6 +18,7 @@ import {
   X,
   ChevronDown,
   Sparkles,
+  Users,
 } from 'lucide-react';
 import { UserProfile, UserRole, InAppNotification } from '@/types';
 
@@ -143,6 +144,7 @@ export default function Navbar({ initialUser }: NavbarProps) {
     { label: 'Doctor Care', href: '/appointments', icon: Stethoscope },
     { label: 'Complaints', href: '/complaints', icon: AlertTriangle },
     { label: 'Civic Rewards', href: '/rewards', icon: Gift },
+    { label: 'People Database', href: '/people', icon: Users },
   ];
 
   // Role portal dynamic shortcuts
