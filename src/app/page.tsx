@@ -74,7 +74,7 @@ export default function HomePage() {
 
           <p className="text-base sm:text-lg text-black font-semibold leading-relaxed">
             Welcome back, <span className="font-black underline decoration-2 decoration-black">{currentUser?.fullName || 'Campus Member'}</span>. 
-            CivicsPulse unites doctor consultations, rapid facilities resolution, local explainable AI triage, 
+            Civic Pulse unites doctor consultations, rapid facilities resolution, local explainable AI triage, 
             and an auditable single-use canteen rewards ledger.
           </p>
 
@@ -388,7 +388,7 @@ export default function HomePage() {
           <span>Zero-Cost Architecture & Hackathon Evaluation Guide</span>
         </h3>
         <p className="text-xs font-semibold text-neutral-700 mt-2 leading-relaxed">
-          CivicsPulse was architected with strict ₹0 budget adherence: Next.js 16 App Router on React 19, strict TypeScript, Tailwind CSS, Lucide icons, and dual persistence: Supabase Free Tier (PostgreSQL + RLS + PL/pgSQL atomic functions) with automatic zero-config local storage fallback.
+          Civic Pulse was architected with strict ₹0 budget adherence: Next.js 16 App Router on React 19, strict TypeScript, Tailwind CSS, Lucide icons, and dual persistence: Supabase Free Tier (PostgreSQL + RLS + PL/pgSQL atomic functions) with automatic zero-config local storage fallback.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5 text-xs">

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CivicsPulse — Smart Campus Civic Care & Doctor Hub',
+  title: 'Civic Pulse',
   description:
     'Complete Zero-Budget Smart Campus Application: Doctor Appointments, Civic Issue Triage with Local AI, Idempotent Rewards & Canteen Coupons, and Restricted Ethics Grievance Directorate.',
 };

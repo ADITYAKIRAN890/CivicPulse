@@ -13,7 +13,7 @@ export default function Footer() {
             </div>
             <div>
               <p className="font-black text-base text-black tracking-tight">
-                Civics<span className="bg-[#38BDF8] px-1 py-0.2 rounded border border-black ml-0.5">Pulse</span> Smart Campus
+                Civic<span className="bg-[#38BDF8] px-1 py-0.2 rounded border border-black ml-0.5">Pulse</span> Smart Campus
               </p>
               <p className="text-xs font-semibold text-neutral-700">
                 Built for zero-budget college hackathon · ₹0 Total Cost Architecture

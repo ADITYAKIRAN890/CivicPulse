@@ -152,7 +152,7 @@ export default function RewardsPage() {
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-black flex items-center space-x-1.5 bg-white px-2 py-0.5 rounded border border-black shadow-[1px_1px_0px_#000]">
               <Award className="w-4 h-4 text-black" />
-              <span>CivicsPulse Student Wallet</span>
+              <span>Civic Pulse Student Wallet</span>
             </span>
             <span className="text-xs font-bold text-neutral-900 bg-white px-2 py-0.5 rounded border border-black">
               {currentUser?.fullName} ({currentUser?.rollNumber || 'Student'})

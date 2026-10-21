@@ -16,7 +16,7 @@ test('Rewards Suite: Idempotency, Overspending, and Atomic Single-Use Coupon Red
         await localDb.issueCanteenCoupon('user-student-2', 'cat-004');
       },
       (err: Error) => {
-        return err.message.includes('Insufficient CivicsPulse Points');
+        return err.message.includes('Insufficient Civic Pulse Points');
       }
     );
   });

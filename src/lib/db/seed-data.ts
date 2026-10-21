@@ -480,7 +480,7 @@ export const SEED_REWARD_LEDGER: RewardLedgerEntry[] = [
     balanceAfter: 25,
     transactionType: 'complaint_triage_reward',
     referenceId: 'cmp-003',
-    description: 'Awarded 25 CivicsPulse points: Water Cooler complaint verified by facilities.',
+    description: 'Awarded 25 Civic Pulse points: Water Cooler complaint verified by facilities.',
     createdAt: '2026-10-17T10:00:00Z',
   },
   {
@@ -491,7 +491,7 @@ export const SEED_REWARD_LEDGER: RewardLedgerEntry[] = [
     balanceAfter: 75,
     transactionType: 'complaint_resolution_reward',
     referenceId: 'cmp-003',
-    description: 'Awarded 50 CivicsPulse points: Water Cooler complaint verified resolved with photographic evidence.',
+    description: 'Awarded 50 Civic Pulse points: Water Cooler complaint verified resolved with photographic evidence.',
     createdAt: '2026-10-18T16:30:00Z',
   },
   {
@@ -502,7 +502,7 @@ export const SEED_REWARD_LEDGER: RewardLedgerEntry[] = [
     balanceAfter: 100,
     transactionType: 'complaint_triage_reward',
     referenceId: 'cmp-001',
-    description: 'Awarded 25 CivicsPulse points: Exposed Wiring safety hazard complaint triaged.',
+    description: 'Awarded 25 Civic Pulse points: Exposed Wiring safety hazard complaint triaged.',
     createdAt: '2026-10-20T09:15:00Z',
   },
   {
@@ -576,7 +576,7 @@ export const SEED_NOTIFICATIONS: InAppNotification[] = [
   {
     id: 'notif-002',
     userId: 'user-student-1',
-    title: '+50 CivicsPulse Points Credited!',
+    title: '+50 Civic Pulse Points Credited!',
     message: 'Your complaint CMP-2026-1042 was marked resolved with proof. Keep up the civic impact!',
     type: 'reward',
     read: false,

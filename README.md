@@ -1,4 +1,4 @@
-# CivicsPulse — Smart Campus Civic & Care Application
+# Civic Pulse — Smart Campus Civic & Care Application
 
 > **Total Project Budget: ₹0.00**  
 > Built with Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, Lucide Icons, and Supabase Free Tier (PostgreSQL + RLS + Atomic Stored Procedures) with 100% zero-configuration local fallback.
@@ -7,14 +7,14 @@
 [![React](https://img.shields.io/badge/React-19.3.0-blue?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-4.x-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
-[![Tests](https://img.shields.io/badge/Tests-23%20Passed-10b981)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-28%20Passed-10b981)](tests/)
 [![Budget](https://img.shields.io/badge/Total%20Cost-₹0%20(Free%20Tier)-emerald)](.env.example)
 
 ---
 
 ## 🌟 Executive Summary
 
-**CivicsPulse** is a production-grade, zero-budget smart campus portal designed for collegiate institutions. It bridges the gap between campus medical wellness, civic infrastructure maintenance, ethical accountability, and student motivation.
+**Civic Pulse** is a production-grade, zero-budget smart campus portal designed for collegiate institutions. It bridges the gap between campus medical wellness, civic infrastructure maintenance, ethical accountability, and student motivation.
 
 Every feature operates on genuinely free services:
 - **Zero Paid AI APIs:** Local, pure TypeScript NLP algorithms (TF-IDF vector cosine angle + Jaccard tokenization + n-gram similarity) provide duplicate detection and explainable priority scoring.
@@ -103,7 +103,7 @@ An interactive **Demo Persona Switcher** is pinned to the application header. Ev
 - `award_complaint_milestone(...)`: Enforces idempotency key checks; prevents duplicate points on multiple clicks.
 
 ### Local Fallback Engine
-When run locally without Supabase credentials, CivicsPulse automatically boots on an internal file-backed atomic store (`.civicspulse-data.json`) with in-memory `AsyncMutex` locks mirroring the PostgreSQL concurrency guarantees.
+When run locally without Supabase credentials, Civic Pulse automatically boots on an internal file-backed atomic store (`.civicspulse-data.json`) with in-memory `AsyncMutex` locks mirroring the PostgreSQL concurrency guarantees.
 
 ---
 
@@ -232,7 +232,7 @@ npm run start
    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
    ```
-4. If omitted, CivicsPulse automatically operates on the local fallback store.
+4. If omitted, Civic Pulse automatically operates on the local fallback store.
 
 ---
 

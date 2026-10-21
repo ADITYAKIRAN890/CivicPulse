@@ -168,7 +168,7 @@ export default function Navbar({ initialUser }: NavbarProps) {
             HACKATHON EVALUATION MODE
           </span>
           <span className="hidden sm:inline text-black font-extrabold">
-            CivicsPulse · Zero-Budget College MVP (₹0 Stack)
+            Civic Pulse
           </span>
         </div>
         <div className="flex items-center space-x-3">
@@ -206,7 +206,7 @@ export default function Navbar({ initialUser }: NavbarProps) {
             <div>
               <div className="flex items-center space-x-1.5">
                 <span className="font-black text-2xl tracking-tight text-black">
-                  Civics<span className="bg-[#38BDF8] px-1.5 py-0.5 rounded border-2 border-black shadow-[2px_2px_0px_#000] ml-1">Pulse</span>
+                  Civic<span className="bg-[#38BDF8] px-1.5 py-0.5 rounded border-2 border-black shadow-[2px_2px_0px_#000] ml-1">Pulse</span>
                 </span>
                 <span className="text-[10px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded bg-[#A3E635] text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
                   Campus

@@ -182,7 +182,7 @@ class LocalDatabase {
           balanceAfter: 25,
           transactionType: 'admin_adjustment',
           referenceId: 'sys-onboard',
-          description: 'Welcome to CivicsPulse! Verified Campus Member Bonus.',
+          description: 'Welcome to Civic Pulse! Verified Campus Member Bonus.',
           createdAt: new Date().toISOString(),
         });
       }
@@ -273,7 +273,7 @@ class LocalDatabase {
           balanceAfter: 25,
           transactionType: 'admin_adjustment',
           referenceId: 'sys-onboard',
-          description: 'Welcome to CivicsPulse! Verified Campus Member Bonus.',
+          description: 'Welcome to Civic Pulse! Verified Campus Member Bonus.',
           createdAt: new Date().toISOString(),
         });
       }
@@ -1032,7 +1032,7 @@ class LocalDatabase {
       let wallet = this.data.wallets.find((w) => w.userId === studentId);
       if (!wallet || wallet.balance < item.pointsCost) {
         throw new Error(
-          `Insufficient CivicsPulse Points. Required: ${item.pointsCost} pts, Current Balance: ${wallet?.balance || 0} pts.`
+          `Insufficient Civic Pulse Points. Required: ${item.pointsCost} pts, Current Balance: ${wallet?.balance || 0} pts.`
         );
       }
 

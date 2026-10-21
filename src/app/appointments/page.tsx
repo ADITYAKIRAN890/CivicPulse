@@ -273,7 +273,7 @@ export default function AppointmentsPage() {
         <ShieldCheck className="w-5 h-5 text-black shrink-0 mt-0.5" />
         <div className="text-xs text-black font-semibold leading-relaxed">
           <span className="font-black text-black block mb-0.5">Campus Medical Privacy Guarantee</span>
-          CivicsPulse strictly restricts appointment data to logistics (Doctor, Date, Time Slot, and Visit Category). No private medical records, prescriptions, or clinical diagnoses are stored in the system.
+          Civic Pulse strictly restricts appointment data to logistics (Doctor, Date, Time Slot, and Visit Category). No private medical records, prescriptions, or clinical diagnoses are stored in the system.
         </div>
       </div>
 
