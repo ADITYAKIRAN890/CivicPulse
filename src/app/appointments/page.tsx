@@ -222,45 +222,45 @@ export default function AppointmentsPage() {
   );
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-black">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#38BDF8] border-[3px] border-black shadow-[6px_6px_0px_#000] rounded-2xl p-6 sm:p-8">
         <div>
-          <div className="flex items-center space-x-2 text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <Stethoscope className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 bg-black text-white px-2.5 py-0.5 rounded text-xs font-black uppercase tracking-wider border border-black shadow-[1.5px_1.5px_0px_#000] mb-2">
+            <Stethoscope className="w-4 h-4 text-[#38BDF8]" />
             <span>Primary Campus Feature · Health & Wellness</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-black tracking-tight">
             Campus Doctor Appointments
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm font-semibold text-neutral-800 mt-1">
             Schedule consultations with certified campus physicians, counselors, and sports specialists with real-time slot conflict prevention.
           </p>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800">
+        <div className="flex items-center gap-2 p-1.5 rounded-xl bg-white border-2 border-black shadow-[3px_3px_0px_#000] shrink-0">
           <button
             onClick={() => setActiveTab('book')}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition ${
+            className={`px-4 py-2 rounded-lg text-xs font-black transition border-2 ${
               activeTab === 'book'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#FFE600] border-black text-black shadow-[2px_2px_0px_#000]'
+                : 'border-transparent text-black hover:bg-neutral-100'
             }`}
           >
             Book New Slot
           </button>
           <button
             onClick={() => setActiveTab('my_appointments')}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition flex items-center space-x-1.5 ${
+            className={`px-4 py-2 rounded-lg text-xs font-black transition flex items-center space-x-1.5 border-2 ${
               activeTab === 'my_appointments'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#FFE600] border-black text-black shadow-[2px_2px_0px_#000]'
+                : 'border-transparent text-black hover:bg-neutral-100'
             }`}
           >
             <span>My Bookings</span>
             {upcomingAppointments.length > 0 && (
-              <span className="w-4 h-4 rounded-full bg-blue-400 text-slate-900 text-[10px] font-bold flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-black text-white text-[10px] font-black flex items-center justify-center">
                 {upcomingAppointments.length}
               </span>
             )}
@@ -269,10 +269,10 @@ export default function AppointmentsPage() {
       </div>
 
       {/* Privacy Notice */}
-      <div className="p-4 rounded-2xl glass-card border border-blue-900/40 bg-blue-950/20 flex items-start space-x-3">
-        <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-        <div className="text-xs text-slate-300 leading-relaxed">
-          <span className="font-bold text-white block mb-0.5">Campus Medical Privacy Guarantee</span>
+      <div className="p-4 rounded-xl bg-[#FEF08A] border-2 border-black shadow-[3.5px_3.5px_0px_#000] flex items-start space-x-3">
+        <ShieldCheck className="w-5 h-5 text-black shrink-0 mt-0.5" />
+        <div className="text-xs text-black font-semibold leading-relaxed">
+          <span className="font-black text-black block mb-0.5">Campus Medical Privacy Guarantee</span>
           CivicsPulse strictly restricts appointment data to logistics (Doctor, Date, Time Slot, and Visit Category). No private medical records, prescriptions, or clinical diagnoses are stored in the system.
         </div>
       </div>
@@ -281,8 +281,8 @@ export default function AppointmentsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Doctor Directory Cards (Left Column) */}
           <div className="lg:col-span-1 space-y-4">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <User className="w-4 h-4 text-blue-400" />
+            <h2 className="text-base font-black text-black flex items-center space-x-2">
+              <User className="w-4 h-4 text-black" />
               <span>1. Choose Specialist</span>
             </h2>
 
@@ -296,41 +296,41 @@ export default function AppointmentsPage() {
                       setSelectedDoctorId(doc.id);
                       setSelectedTimeSlot('');
                     }}
-                    className={`p-4 rounded-2xl cursor-pointer transition border ${
+                    className={`p-4 rounded-xl cursor-pointer transition border-[2.5px] border-black shadow-[3.5px_3.5px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_#000] ${
                       isSelected
-                        ? 'bg-blue-950/40 border-blue-500 shadow-lg shadow-blue-500/10'
-                        : 'glass-card hover:border-slate-600'
+                        ? 'bg-[#FFE600]'
+                        : 'bg-white'
                     }`}
                   >
                     <div className="flex items-start space-x-3">
-                      <div className="w-12 h-12 rounded-xl bg-slate-800 overflow-hidden shrink-0 border border-slate-700">
+                      <div className="w-12 h-12 rounded-xl bg-white overflow-hidden shrink-0 border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
                         {doc.avatarUrl ? (
                           <img src={doc.avatarUrl} alt={doc.fullName} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center font-bold text-blue-400">
+                          <div className="w-full h-full flex items-center justify-center font-black text-black text-lg">
                             {doc.fullName.charAt(0)}
                           </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-bold text-sm text-white truncate">{doc.fullName}</h3>
-                          {isSelected && <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />}
+                          <h3 className="font-black text-sm text-black truncate">{doc.fullName}</h3>
+                          {isSelected && <CheckCircle2 className="w-4 h-4 text-black shrink-0" />}
                         </div>
-                        <p className="text-xs text-blue-400 font-medium truncate">{doc.specialization}</p>
-                        <p className="text-[11px] text-slate-400 mt-1 flex items-center space-x-1">
-                          <MapPin className="w-3 h-3 text-slate-500 shrink-0" />
+                        <p className="text-xs font-bold text-neutral-800 truncate">{doc.specialization}</p>
+                        <p className="text-[11px] font-semibold text-neutral-700 mt-1 flex items-center space-x-1">
+                          <MapPin className="w-3 h-3 text-black shrink-0" />
                           <span className="truncate">{doc.clinicCabin}</span>
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-1">
-                      <p className="flex items-center space-x-1">
-                        <Clock className="w-3 h-3 text-slate-500" />
+                    <div className="mt-3 pt-3 border-t-2 border-black/20 text-[11px] text-neutral-800 space-y-1">
+                      <p className="flex items-center space-x-1 font-bold">
+                        <Clock className="w-3 h-3 text-black" />
                         <span>{doc.consultationHours}</span>
                       </p>
-                      <p className="line-clamp-2 text-slate-400 text-[10px]">{doc.bio}</p>
+                      <p className="line-clamp-2 text-neutral-700 font-medium text-[10px]">{doc.bio}</p>
                     </div>
                   </div>
                 );
@@ -339,47 +339,47 @@ export default function AppointmentsPage() {
           </div>
 
           {/* Booking Form (Right 2 Columns) */}
-          <div className="lg:col-span-2 glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-blue-400" />
+          <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl border-[3px] border-black shadow-[6px_6px_0px_#000] space-y-6">
+            <h2 className="text-base font-black text-black flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-black" />
               <span>2. Select Schedule & Consultation Details</span>
             </h2>
 
             {/* Error & Success Alerts */}
             {bookingError && (
-              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <div className="p-4 rounded-xl bg-[#FB7185] border-2 border-black shadow-[3px_3px_0px_#000] text-black text-xs flex items-start space-x-2">
+                <AlertCircle className="w-4 h-4 text-black shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold block">Scheduling Conflict / Error</span>
-                  {bookingError}
+                  <span className="font-black block">Scheduling Conflict / Error</span>
+                  <span className="font-bold">{bookingError}</span>
                 </div>
               </div>
             )}
 
             {bookedSuccess && (
-              <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs space-y-2">
-                <div className="flex items-center space-x-2 font-bold text-sm text-emerald-400">
-                  <CheckCircle2 className="w-5 h-5" />
+              <div className="p-5 rounded-2xl bg-[#A3E635] border-2 border-black shadow-[4px_4px_0px_#000] text-black text-xs space-y-2">
+                <div className="flex items-center space-x-2 font-black text-sm text-black">
+                  <CheckCircle2 className="w-5 h-5 text-black" />
                   <span>Appointment Confirmed Successfully!</span>
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-slate-300 pt-2 border-t border-emerald-500/20">
+                <div className="grid grid-cols-2 gap-2 text-black pt-2 border-t-2 border-black font-semibold">
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Reference Code</span>
-                    <span className="font-mono font-bold text-white text-xs">{bookedSuccess.referenceCode}</span>
+                    <span className="text-neutral-800 block text-[10px]">Reference Code</span>
+                    <span className="font-mono font-black text-black text-xs">{bookedSuccess.referenceCode}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Doctor</span>
-                    <span className="font-semibold text-white">{bookedSuccess.doctorName}</span>
+                    <span className="text-neutral-800 block text-[10px]">Doctor</span>
+                    <span className="font-bold text-black">{bookedSuccess.doctorName}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Date & Time</span>
-                    <span className="font-semibold text-white">
+                    <span className="text-neutral-800 block text-[10px]">Date & Time</span>
+                    <span className="font-bold text-black">
                       {bookedSuccess.date} at {bookedSuccess.timeSlot}
                     </span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Clinic Location</span>
-                    <span className="font-semibold text-white">{bookedSuccess.clinicCabin}</span>
+                    <span className="text-neutral-800 block text-[10px]">Clinic Location</span>
+                    <span className="font-bold text-black">{bookedSuccess.clinicCabin}</span>
                   </div>
                 </div>
               </div>
@@ -388,7 +388,7 @@ export default function AppointmentsPage() {
             <form onSubmit={handleBookAppointment} className="space-y-6">
               {/* Date Picker */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-2">
+                <label className="block text-xs font-black text-black mb-2">
                   Consultation Date
                 </label>
                 <input
@@ -399,12 +399,12 @@ export default function AppointmentsPage() {
                     setSelectedDate(e.target.value);
                     setSelectedTimeSlot('');
                   }}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black font-bold text-sm shadow-[3px_3px_0px_#000] focus:shadow-[5px_5px_0px_#000] outline-none transition"
                   required
                 />
                 {isDoctorBlockedOnDate && (
-                  <p className="text-xs text-rose-400 font-semibold mt-1 flex items-center space-x-1">
-                    <XCircle className="w-3.5 h-3.5" />
+                  <p className="text-xs text-black font-black mt-1.5 flex items-center space-x-1 bg-[#FB7185] p-2 rounded border border-black shadow-[2px_2px_0px_#000]">
+                    <XCircle className="w-4 h-4" />
                     <span>Doctor is on leave or unavailable on this selected date. Please pick another date.</span>
                   </p>
                 )}
@@ -412,11 +412,11 @@ export default function AppointmentsPage() {
 
               {/* Time Slots Grid */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-2">
+                <label className="block text-xs font-black text-black mb-2">
                   Available Consultation Slots ({selectedDate})
                 </label>
                 {isDoctorBlockedOnDate ? (
-                  <p className="text-xs text-slate-500 italic">No slots available on doctor leave date.</p>
+                  <p className="text-xs text-neutral-600 font-bold italic">No slots available on doctor leave date.</p>
                 ) : (
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                     {TIME_SLOTS.map((slot) => {
@@ -428,16 +428,16 @@ export default function AppointmentsPage() {
                           type="button"
                           disabled={isBooked}
                           onClick={() => setSelectedTimeSlot(slot)}
-                          className={`py-2 px-3 rounded-xl text-xs font-semibold transition border ${
+                          className={`py-2 px-3 rounded-lg text-xs font-black transition border-2 border-black shadow-[2.5px_2.5px_0px_#000] ${
                             isBooked
-                              ? 'bg-slate-900/40 border-slate-800 text-slate-600 cursor-not-allowed line-through'
+                              ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed line-through'
                               : isSelected
-                              ? 'bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/20'
-                              : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-600 hover:text-white'
+                              ? 'bg-[#FFE600] text-black shadow-[4px_4px_0px_#000]'
+                              : 'bg-white text-black hover:bg-[#FAF7EE]'
                           }`}
                         >
                           {slot}
-                          {isBooked && <span className="block text-[9px] text-rose-400/80 font-normal">Reserved</span>}
+                          {isBooked && <span className="block text-[9px] text-neutral-600 font-bold">Reserved</span>}
                         </button>
                       );
                     })}
@@ -447,13 +447,13 @@ export default function AppointmentsPage() {
 
               {/* Reason Category */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-2">
+                <label className="block text-xs font-black text-black mb-2">
                   Reason for Visit
                 </label>
                 <select
                   value={selectedReason}
                   onChange={(e) => setSelectedReason(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black font-bold text-sm shadow-[3px_3px_0px_#000] focus:shadow-[5px_5px_0px_#000] outline-none transition"
                   required
                 >
                   {REASON_CATEGORIES.map((cat) => (
@@ -466,7 +466,7 @@ export default function AppointmentsPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-2">
+                <label className="block text-xs font-black text-black mb-2">
                   Logistics Notes (Optional)
                 </label>
                 <textarea
@@ -474,7 +474,7 @@ export default function AppointmentsPage() {
                   value={bookingNotes}
                   onChange={(e) => setBookingNotes(e.target.value)}
                   placeholder="e.g. Need signature on sports trial form; recurring fever for 2 days..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500 transition"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black font-semibold text-sm shadow-[3px_3px_0px_#000] focus:shadow-[5px_5px_0px_#000] outline-none transition"
                 />
               </div>
 
@@ -482,16 +482,16 @@ export default function AppointmentsPage() {
               <button
                 type="submit"
                 disabled={isBooking || isDoctorBlockedOnDate || !selectedTimeSlot}
-                className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-bold text-sm shadow-xl shadow-blue-600/20 transition flex items-center justify-center space-x-2"
+                className="w-full py-3.5 rounded-xl bg-[#FFE600] hover:bg-[#FFF066] disabled:bg-neutral-200 disabled:text-neutral-500 text-black font-black text-sm border-[2.5px] border-black shadow-[4px_4px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] transition flex items-center justify-center space-x-2"
               >
                 {isBooking ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <RefreshCw className="w-4 h-4 animate-spin text-black" />
                     <span>Verifying Slot Concurrency...</span>
                   </>
                 ) : (
                   <>
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-4 h-4 text-black" />
                     <span>Confirm & Lock Appointment Slot</span>
                   </>
                 )}
@@ -503,21 +503,23 @@ export default function AppointmentsPage() {
         /* My Appointments Tab */
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-blue-400" />
+            <h2 className="text-base font-black text-black flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-black" />
               <span>Upcoming & Scheduled Visits</span>
             </h2>
-            <span className="text-xs text-slate-400">{upcomingAppointments.length} Active</span>
+            <span className="text-xs font-black px-2.5 py-0.5 rounded bg-black text-white border border-black shadow-[1.5px_1.5px_0px_#000]">
+              {upcomingAppointments.length} Active
+            </span>
           </div>
 
           {upcomingAppointments.length === 0 ? (
-            <div className="glass-card rounded-2xl p-12 text-center text-slate-400">
-              <Stethoscope className="w-10 h-10 mx-auto mb-3 text-slate-600" />
-              <p className="font-semibold text-sm text-slate-300">No active doctor appointments.</p>
-              <p className="text-xs text-slate-500 mt-1">Book a slot above with any of our campus health specialists.</p>
+            <div className="bg-white rounded-2xl p-12 text-center text-black border-[3px] border-black shadow-[5px_5px_0px_#000]">
+              <Stethoscope className="w-12 h-12 mx-auto mb-3 text-black" />
+              <p className="font-black text-base text-black">No active doctor appointments.</p>
+              <p className="text-xs font-semibold text-neutral-700 mt-1">Book a slot above with any of our campus health specialists.</p>
               <button
                 onClick={() => setActiveTab('book')}
-                className="mt-4 px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-semibold"
+                className="mt-4 px-4 py-2 rounded-xl bg-[#FFE600] text-black text-xs font-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-yellow-300 transition"
               >
                 Schedule Appointment Now
               </button>
@@ -525,52 +527,52 @@ export default function AppointmentsPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {upcomingAppointments.map((apt) => (
-                <div key={apt.id} className="glass-card p-5 rounded-2xl border border-slate-700 space-y-4">
+                <div key={apt.id} className="bg-white p-5 rounded-2xl border-[2.5px] border-black shadow-[4px_4px_0px_#000] space-y-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold">
+                      <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-black text-white font-black border border-black shadow-[1.5px_1.5px_0px_#000]">
                         {apt.referenceCode}
                       </span>
-                      <h3 className="font-bold text-base text-white mt-1.5">{apt.doctorName}</h3>
-                      <p className="text-xs text-blue-400">{apt.doctorSpecialization}</p>
+                      <h3 className="font-black text-base text-black mt-2">{apt.doctorName}</h3>
+                      <p className="text-xs font-bold text-neutral-800">{apt.doctorSpecialization}</p>
                     </div>
-                    <span className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold uppercase tracking-wider">
+                    <span className="text-[10px] px-2.5 py-1 rounded-md bg-[#A3E635] text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000] font-black uppercase tracking-wider">
                       {apt.status}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-300 pt-2 border-t border-slate-800">
+                  <div className="grid grid-cols-2 gap-2 text-xs text-black pt-2 border-t-2 border-black font-semibold">
                     <p className="flex items-center space-x-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                      <Calendar className="w-3.5 h-3.5 text-black" />
                       <span>{apt.date}</span>
                     </p>
                     <p className="flex items-center space-x-1.5">
-                      <Clock className="w-3.5 h-3.5 text-slate-500" />
+                      <Clock className="w-3.5 h-3.5 text-black" />
                       <span>{apt.timeSlot}</span>
                     </p>
                     <p className="col-span-2 flex items-center space-x-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                      <MapPin className="w-3.5 h-3.5 text-black" />
                       <span>{apt.clinicCabin}</span>
                     </p>
-                    <p className="col-span-2 text-slate-400 text-[11px]">
-                      Reason: <span className="text-slate-200">{apt.reasonCategory}</span>
+                    <p className="col-span-2 text-neutral-700 text-[11px]">
+                      Reason: <span className="font-bold text-black">{apt.reasonCategory}</span>
                     </p>
                   </div>
 
-                  <div className="flex items-center space-x-2 pt-2 border-t border-slate-800">
+                  <div className="flex items-center space-x-2 pt-2 border-t-2 border-black">
                     <button
                       onClick={() => {
                         setReschedulingApt(apt);
                         setRescheduleDate(apt.date);
                         setRescheduleSlot('');
                       }}
-                      className="flex-1 py-1.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition"
+                      className="flex-1 py-1.5 px-3 rounded-lg bg-[#38BDF8] hover:bg-[#7DD3FC] text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition"
                     >
                       Reschedule
                     </button>
                     <button
                       onClick={() => handleCancelAppointment(apt.id)}
-                      className="py-1.5 px-3 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-xs font-semibold text-rose-400 border border-rose-500/20 transition"
+                      className="py-1.5 px-3 rounded-lg bg-[#FB7185] hover:bg-rose-400 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition"
                     >
                       Cancel
                     </button>
@@ -582,25 +584,25 @@ export default function AppointmentsPage() {
 
           {/* Past History */}
           {pastAppointments.length > 0 && (
-            <div className="pt-6 border-t border-slate-800 space-y-3">
-              <h3 className="text-sm font-bold text-slate-400">Past & Cancelled Consultations</h3>
-              <div className="divide-y divide-slate-800/80 glass-card rounded-2xl overflow-hidden">
+            <div className="pt-6 border-t-2 border-black space-y-3">
+              <h3 className="text-sm font-black text-black">Past & Cancelled Consultations</h3>
+              <div className="divide-y-2 divide-neutral-200 bg-white border-2 border-black shadow-[4px_4px_0px_#000] rounded-2xl overflow-hidden">
                 {pastAppointments.map((apt) => (
                   <div key={apt.id} className="p-4 flex items-center justify-between text-xs">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-slate-500">{apt.referenceCode}</span>
-                        <span className="font-semibold text-slate-300">{apt.doctorName}</span>
+                        <span className="font-mono font-black text-black">{apt.referenceCode}</span>
+                        <span className="font-black text-black">{apt.doctorName}</span>
                       </div>
-                      <p className="text-slate-500 mt-0.5">
+                      <p className="text-neutral-700 font-semibold mt-0.5">
                         {apt.date} at {apt.timeSlot} · {apt.reasonCategory}
                       </p>
                     </div>
                     <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                      className={`px-2.5 py-0.5 rounded text-[10px] font-black border border-black shadow-[1px_1px_0px_#000] ${
                         apt.status === 'completed'
-                          ? 'bg-slate-800 text-emerald-400'
-                          : 'bg-slate-800 text-slate-500'
+                          ? 'bg-[#A3E635] text-black'
+                          : 'bg-neutral-200 text-neutral-800'
                       }`}
                     >
                       {apt.status.replace(/_/g, ' ')}
@@ -615,42 +617,42 @@ export default function AppointmentsPage() {
 
       {/* Reschedule Modal */}
       {reschedulingApt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="w-full max-w-md glass-card rounded-3xl p-6 border border-slate-700 space-y-4">
-            <h3 className="font-bold text-base text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="w-full max-w-md bg-white rounded-3xl p-6 border-[3.5px] border-black shadow-[8px_8px_0px_#000] space-y-4">
+            <h3 className="font-black text-lg text-black">
               Reschedule: {reschedulingApt.doctorName}
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs font-semibold text-neutral-700">
               Current Slot: {reschedulingApt.date} at {reschedulingApt.timeSlot}
             </p>
 
             {rescheduleError && (
-              <p className="text-xs text-rose-400 font-semibold">{rescheduleError}</p>
+              <p className="text-xs font-black text-black bg-[#FB7185] p-2 rounded border border-black">{rescheduleError}</p>
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">New Date</label>
+              <label className="block text-xs font-black text-black mb-1">New Date</label>
               <input
                 type="date"
                 min={todayString}
                 value={rescheduleDate}
                 onChange={(e) => setRescheduleDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs"
+                className="w-full px-3 py-2 rounded-xl bg-white border-2 border-black text-black font-bold text-xs shadow-[2px_2px_0px_#000]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">New Time Slot</label>
+              <label className="block text-xs font-black text-black mb-1">New Time Slot</label>
               <div className="grid grid-cols-3 gap-2">
                 {TIME_SLOTS.map((slot) => (
                   <button
                     key={slot}
                     type="button"
                     onClick={() => setRescheduleSlot(slot)}
-                    className={`py-1.5 px-2 rounded-lg text-xs font-semibold border ${
+                    className={`py-1.5 px-2 rounded-lg text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000] ${
                       rescheduleSlot === slot
-                        ? 'bg-blue-600 border-blue-500 text-white'
-                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                        ? 'bg-[#FFE600] text-black'
+                        : 'bg-white text-black hover:bg-neutral-100'
                     }`}
                   >
                     {slot}
@@ -659,17 +661,17 @@ export default function AppointmentsPage() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 pt-3 border-t border-slate-800">
+            <div className="flex items-center space-x-2 pt-3 border-t-2 border-black">
               <button
                 onClick={() => setReschedulingApt(null)}
-                className="flex-1 py-2 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300"
+                className="flex-1 py-2 rounded-xl bg-white border-2 border-black text-xs font-black text-black shadow-[2px_2px_0px_#000] hover:bg-neutral-100"
               >
                 Close
               </button>
               <button
                 onClick={handleConfirmReschedule}
                 disabled={isRescheduling || !rescheduleSlot}
-                className="flex-1 py-2 rounded-xl bg-blue-600 text-xs font-semibold text-white shadow-md disabled:bg-slate-800"
+                className="flex-1 py-2 rounded-xl bg-[#FFE600] text-xs font-black text-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-yellow-300 disabled:bg-neutral-200"
               >
                 {isRescheduling ? 'Rescheduling...' : 'Confirm Move'}
               </button>
@@ -680,3 +682,4 @@ export default function AppointmentsPage() {
     </div>
   );
 }
+

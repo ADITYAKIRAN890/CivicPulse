@@ -98,10 +98,12 @@ export default function AdminHubPage() {
 
   if (!loading && !isAdmin) {
     return (
-      <div className="p-12 glass-card rounded-3xl text-center space-y-4 max-w-lg mx-auto">
-        <UserCheck className="w-12 h-12 text-rose-400 mx-auto" />
-        <h2 className="text-xl font-bold text-white">Dean & Admin Access Restricted</h2>
-        <p className="text-xs text-slate-400">
+      <div className="p-8 sm:p-12 bg-white rounded-3xl text-center space-y-4 max-w-lg mx-auto border-[3.5px] border-black shadow-[8px_8px_0px_#000] text-black">
+        <div className="w-16 h-16 rounded-2xl bg-[#FB7185] border-2 border-black shadow-[3px_3px_0px_#000] flex items-center justify-center mx-auto text-black">
+          <UserCheck className="w-8 h-8 text-black" />
+        </div>
+        <h2 className="text-2xl font-black text-black">Dean & Admin Access Restricted</h2>
+        <p className="text-xs font-bold text-neutral-700 leading-relaxed">
           You are currently signed in as <strong>{currentUser?.fullName}</strong> ({currentUser?.role}).
           To view the Campus Dean & Administrator Analytics Hub, use the top <strong>Persona Switcher</strong> to switch to <strong>Dr. Meenakshi Sundaram (Campus Dean)</strong>.
         </p>
@@ -114,18 +116,18 @@ export default function AdminHubPage() {
   );
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-black">
       {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#FB7185] border-[3.5px] border-black shadow-[6px_6px_0px_#000] flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <UserCheck className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-black uppercase tracking-wider mb-3">
+            <UserCheck className="w-4 h-4 text-black" />
             <span>Office of the Dean & Campus Administration</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-black tracking-tight">
             Administrator Control & Analytics
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-1 max-w-xl">
             Campus-wide infrastructure heatmaps, doctor booking load, enrollment approvals, and reward audit oversight.
           </p>
         </div>
@@ -133,91 +135,97 @@ export default function AdminHubPage() {
         <button
           onClick={handleResetData}
           disabled={isResetting}
-          className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg transition self-start md:self-auto"
+          className="flex items-center space-x-2 px-5 py-3 rounded-2xl bg-[#FFE600] hover:bg-yellow-300 text-black font-black text-sm border-2 border-black shadow-[4px_4px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5 self-start md:self-auto"
         >
-          <RefreshCw className={`w-4 h-4 ${isResetting ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 text-black ${isResetting ? 'animate-spin' : ''}`} />
           <span>Reset All Demo Data</span>
         </button>
       </div>
 
       {/* Analytics KPI Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-card p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 block font-semibold">Registered Campus Accounts</span>
-          <span className="text-3xl font-extrabold text-white mt-1 block">{allUsers.length}</span>
-          <span className="text-[11px] text-blue-400 mt-1 block">Students, Doctors & Staff</span>
+        <div className="bg-white p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#000]">
+          <span className="text-xs text-neutral-700 block font-black">Registered Accounts</span>
+          <span className="text-3xl font-black text-black mt-1 block">{allUsers.length}</span>
+          <span className="text-[11px] font-black text-black bg-[#38BDF8] px-2 py-0.5 rounded border border-black inline-block mt-2">
+            Students & Faculty
+          </span>
         </div>
 
-        <div className="glass-card p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 block font-semibold">Total Civic Issues Logged</span>
-          <span className="text-3xl font-extrabold text-amber-400 mt-1 block">{complaints.length}</span>
-          <span className="text-[11px] text-slate-400 mt-1 block">
+        <div className="bg-white p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#000]">
+          <span className="text-xs text-neutral-700 block font-black">Total Issues Logged</span>
+          <span className="text-3xl font-black text-black mt-1 block">{complaints.length}</span>
+          <span className="text-[11px] font-black text-black bg-[#FFE600] px-2 py-0.5 rounded border border-black inline-block mt-2">
             {resolvedComplaints.length} Resolved with Proof
           </span>
         </div>
 
-        <div className="glass-card p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 block font-semibold">Doctor Consultations</span>
-          <span className="text-3xl font-extrabold text-emerald-400 mt-1 block">{appointments.length}</span>
-          <span className="text-[11px] text-slate-400 mt-1 block">0 Double-Booking Race Errors</span>
+        <div className="bg-white p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#000]">
+          <span className="text-xs text-neutral-700 block font-black">Doctor Consultations</span>
+          <span className="text-3xl font-black text-black mt-1 block">{appointments.length}</span>
+          <span className="text-[11px] font-black text-black bg-[#A3E635] px-2 py-0.5 rounded border border-black inline-block mt-2">
+            0 Double-Bookings
+          </span>
         </div>
 
-        <div className="glass-card p-5 rounded-2xl">
-          <span className="text-xs text-slate-400 block font-semibold">Total Cloud Budget Spent</span>
-          <span className="text-3xl font-extrabold text-purple-400 mt-1 block">₹0.00</span>
-          <span className="text-[11px] text-emerald-400 mt-1 block">100% Free Tier Compliant</span>
+        <div className="bg-white p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#000]">
+          <span className="text-xs text-neutral-700 block font-black">Cloud Budget Spent</span>
+          <span className="text-3xl font-black text-black mt-1 block">₹0.00</span>
+          <span className="text-[11px] font-black text-black bg-[#C084FC] px-2 py-0.5 rounded border border-black inline-block mt-2">
+            100% Free Stack
+          </span>
         </div>
       </div>
 
       {/* Registered Campus Users Directory & Enrollment Approvals */}
       <div className="space-y-4">
-        <h2 className="text-base font-bold text-white flex items-center space-x-2">
-          <Users className="w-4 h-4 text-blue-400" />
+        <h2 className="text-base font-black text-black flex items-center space-x-2">
+          <Users className="w-5 h-5 text-black" />
           <span>Campus Member Directory & Enrollment Approvals</span>
         </h2>
 
-        <div className="glass-card rounded-2xl overflow-hidden border border-slate-800">
+        <div className="bg-white rounded-3xl overflow-hidden border-[3px] border-black shadow-[5px_5px_0px_#000]">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900 text-slate-400 font-semibold border-b border-slate-800">
+              <thead className="bg-[#FAF7EE] text-black font-black border-b-2 border-black">
                 <tr>
-                  <th className="py-3 px-4">Member Name</th>
-                  <th className="py-3 px-4">Institutional Email</th>
-                  <th className="py-3 px-4">Role</th>
-                  <th className="py-3 px-4">Identifier / Dept</th>
-                  <th className="py-3 px-4">Enrollment Status</th>
-                  <th className="py-3 px-4 text-right">Action</th>
+                  <th className="py-3.5 px-4">Member Name</th>
+                  <th className="py-3.5 px-4">Institutional Email</th>
+                  <th className="py-3.5 px-4">Role</th>
+                  <th className="py-3.5 px-4">Identifier / Dept</th>
+                  <th className="py-3.5 px-4">Enrollment Status</th>
+                  <th className="py-3.5 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80 text-slate-300">
+              <tbody className="divide-y-2 divide-neutral-200 text-neutral-900 font-bold">
                 {allUsers.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-800/40">
-                    <td className="py-3 px-4 font-bold text-white">{u.fullName}</td>
-                    <td className="py-3 px-4 text-slate-400">{u.email}</td>
-                    <td className="py-3 px-4">
-                      <span className="px-2 py-0.5 rounded font-mono text-[10px] bg-slate-800 text-blue-400 uppercase font-semibold">
+                  <tr key={u.id} className="hover:bg-[#FAF7EE]">
+                    <td className="py-3.5 px-4 font-black text-black">{u.fullName}</td>
+                    <td className="py-3.5 px-4 font-medium text-neutral-700">{u.email}</td>
+                    <td className="py-3.5 px-4">
+                      <span className="px-2.5 py-0.5 rounded font-mono text-[10px] bg-[#FFE600] text-black uppercase font-black border border-black">
                         {u.role.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-slate-400">
+                    <td className="py-3.5 px-4 text-neutral-700">
                       {u.rollNumber || u.department || u.clinicCabin || 'General Campus'}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-4">
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                        className={`text-[10px] px-2.5 py-0.5 rounded-full font-black uppercase border border-black ${
                           u.isApproved
-                            ? 'bg-emerald-500/10 text-emerald-400'
-                            : 'bg-amber-500/10 text-amber-400'
+                            ? 'bg-[#A3E635] text-black'
+                            : 'bg-[#FEF08A] text-black'
                         }`}
                       >
                         {u.isApproved ? 'Approved' : 'Pending Verification'}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 px-4 text-right">
                       {!u.isApproved && (
                         <button
                           onClick={() => handleApproveUser(u.id)}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px]"
+                          className="px-3 py-1 rounded-lg bg-[#A3E635] hover:bg-lime-400 text-black font-black text-[11px] border border-black shadow-[1.5px_1.5px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
                         >
                           Approve
                         </button>

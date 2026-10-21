@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b0f19;
-  --foreground: #f1f5f9;
-  --card: #111827;
-  --card-border: #1f293d;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --pulse-teal: #06b6d4;
-  --pulse-emerald: #10b981;
-  --pulse-amber: #f59e0b;
-  --pulse-rose: #f43f5e;
+  --background: #FAF7EE;
+  --foreground: #000000;
+  --border-black: #000000;
+  --neo-yellow: #FFE600;
+  --neo-yellow-light: #FFF066;
+  --neo-cyan: #38BDF8;
+  --neo-cyan-light: #7DD3FC;
+  --neo-lime: #A3E635;
+  --neo-lime-light: #BEF264;
+  --neo-coral: #FB7185;
+  --neo-coral-light: #FDA4AF;
+  --neo-purple: #C084FC;
+  --neo-purple-light: #E9D5FF;
+  --neo-orange: #FB923C;
+  --neo-orange-light: #FDBA74;
 }
 
 @theme inline {
@@ -27,75 +32,175 @@ body {
   overflow-x: hidden;
 }
 
-/* Glassmorphism utility classes */
-.glass-panel {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Neo-Brutalist tactile dot grid background */
+.neo-bg-pattern {
+  background-color: #FAF7EE;
+  background-image: radial-gradient(#000000 1.25px, transparent 1.25px);
+  background-size: 24px 24px;
 }
 
-.glass-card {
-  background: rgba(23, 32, 54, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+/* Core Neo-Brutalist Cards */
+.glass-panel,
+.neo-panel {
+  background-color: #ffffff;
+  border: 2.5px solid #000000;
+  box-shadow: 5px 5px 0px 0px #000000;
+  border-radius: 16px;
+  color: #000000;
 }
 
-.glass-card-hover {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+.glass-card,
+.neo-card {
+  background-color: #ffffff;
+  border: 2.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+  border-radius: 14px;
+  color: #000000;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.glass-card-hover:hover {
-  transform: translateY(-2px);
-  border-color: rgba(59, 130, 246, 0.35);
-  box-shadow: 0 12px 36px 0 rgba(59, 130, 246, 0.15);
+.glass-card-hover,
+.neo-card-hover {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Glowing text and badge accents */
-.text-glow-blue {
-  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+.glass-card-hover:hover,
+.neo-card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #000000;
 }
 
-.text-glow-teal {
-  text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+/* Neo-Brutalist Interactive Buttons */
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  border: 2.5px solid #000000;
+  border-radius: 10px;
+  box-shadow: 3.5px 3.5px 0px 0px #000000;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
 }
 
-.badge-glow {
-  box-shadow: 0 0 12px currentColor;
+.neo-btn:hover {
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 5px 5px 0px 0px #000000;
 }
 
-/* Smooth custom scrollbars */
+.neo-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #000000;
+}
+
+.neo-btn-primary,
+.neo-btn-yellow {
+  background-color: #FFE600;
+  color: #000000;
+}
+.neo-btn-primary:hover,
+.neo-btn-yellow:hover {
+  background-color: #FFF066;
+}
+
+.neo-btn-cyan {
+  background-color: #38BDF8;
+  color: #000000;
+}
+.neo-btn-cyan:hover {
+  background-color: #7DD3FC;
+}
+
+.neo-btn-lime {
+  background-color: #A3E635;
+  color: #000000;
+}
+.neo-btn-lime:hover {
+  background-color: #BEF264;
+}
+
+.neo-btn-coral {
+  background-color: #FB7185;
+  color: #000000;
+}
+.neo-btn-coral:hover {
+  background-color: #FDA4AF;
+}
+
+.neo-btn-purple {
+  background-color: #C084FC;
+  color: #000000;
+}
+.neo-btn-purple:hover {
+  background-color: #E9D5FF;
+}
+
+.neo-btn-white {
+  background-color: #ffffff;
+  color: #000000;
+}
+.neo-btn-white:hover {
+  background-color: #f8fafc;
+}
+
+.neo-btn-black {
+  background-color: #000000;
+  color: #ffffff;
+}
+.neo-btn-black:hover {
+  background-color: #1f2937;
+}
+
+/* Neo-Brutalist Badges */
+.neo-badge {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border: 2px solid #000000;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px 0px #000000;
+  color: #000000;
+}
+
+/* Neo-Brutalist Inputs & Selects */
+.neo-input {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 600;
+  border: 2.5px solid #000000;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0px 0px #000000;
+  outline: none;
+  transition: box-shadow 0.12s ease;
+}
+
+.neo-input:focus {
+  box-shadow: 5px 5px 0px 0px #000000;
+}
+
+/* Custom Scrollbars in Neo-Brutalist style */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b0f19;
+  background: #FAF7EE;
+  border-left: 2px solid #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f293d;
+  background: #FFE600;
+  border: 2px solid #000000;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: #000000;
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.8;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 2.5s infinite ease-in-out;
-}

@@ -277,59 +277,59 @@ export default function ComplaintsPage() {
   });
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-black">
       {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#FB7185] border-[3px] border-black shadow-[6px_6px_0px_#000] rounded-2xl p-6 sm:p-8">
         <div>
-          <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <AlertTriangle className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 bg-black text-white px-2.5 py-0.5 rounded text-xs font-black uppercase tracking-wider border border-black shadow-[1.5px_1.5px_0px_#000] mb-2">
+            <AlertTriangle className="w-4 h-4 text-[#FB7185]" />
             <span>Civic Incident Tracking & Zero-Cost AI Triage</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-black tracking-tight">
             Campus Issues & Infrastructure
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm font-semibold text-neutral-800 mt-1">
             Report hostel, electrical, Wi-Fi, hygiene and lab breakdowns. Real-time duplicate suggestion and explainable priority scoring.
           </p>
         </div>
 
         <button
           onClick={() => setShowSubmitModal(true)}
-          className="flex items-center space-x-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-blue-500/20 transition hover:-translate-y-0.5"
+          className="flex items-center space-x-2 px-5 py-3 rounded-xl bg-[#FFE600] hover:bg-[#FFF066] text-black font-black text-sm border-[2.5px] border-black shadow-[4px_4px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] transition self-start md:self-auto cursor-pointer"
         >
-          <PlusCircle className="w-5 h-5" />
+          <PlusCircle className="w-5 h-5 text-black" />
           <span>Report New Campus Issue</span>
         </button>
       </div>
 
       {/* Staff Behaviour Grievance Link Notice */}
-      <div className="p-4 rounded-2xl glass-card border border-purple-900/40 bg-purple-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="p-4 rounded-xl bg-[#C084FC] border-2 border-black shadow-[3.5px_3.5px_0px_#000] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-black">
         <div className="flex items-center space-x-3">
-          <Shield className="w-5 h-5 text-purple-400 shrink-0" />
-          <div className="text-xs text-slate-300">
-            <span className="font-bold text-white block">Looking for confidential staff or proctor grievances?</span>
+          <Shield className="w-5 h-5 text-black shrink-0" />
+          <div className="text-xs font-semibold">
+            <span className="font-black text-black block">Looking for confidential staff or proctor grievances?</span>
             Staff-behaviour and ethics complaints are handled in a strictly separate, sealed workflow accessible only by the Grievance Officer.
           </div>
         </div>
         <Link
           href="/grievance-portal"
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-purple-600/30 hover:bg-purple-600/50 text-purple-300 text-xs font-semibold border border-purple-500/30 transition shrink-0"
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-neutral-100 transition shrink-0"
         >
           <span>Open Grievance Desk</span>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-3.5 h-3.5 text-black" />
         </Link>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center space-x-2 flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 text-slate-400" />
+      <div className="bg-white p-4 rounded-2xl border-[2.5px] border-black shadow-[4px_4px_0px_#000] flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-2 flex-1 min-w-[240px] bg-[#FAF7EE] border-2 border-black rounded-xl px-3 py-2 shadow-[2px_2px_0px_#000]">
+          <Search className="w-4 h-4 text-black shrink-0" />
           <input
             type="text"
             placeholder="Search by code, keyword, or campus zone..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+            className="w-full bg-transparent text-xs font-bold text-black placeholder-neutral-500 focus:outline-none"
           />
         </div>
 
@@ -338,7 +338,7 @@ export default function ComplaintsPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-300 focus:outline-none"
+            className="px-3 py-2 rounded-xl bg-white border-2 border-black text-xs font-bold text-black shadow-[2px_2px_0px_#000] focus:outline-none"
           >
             <option value="all">All Statuses</option>
             <option value="submitted">Submitted</option>
@@ -352,7 +352,7 @@ export default function ComplaintsPage() {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-300 focus:outline-none"
+            className="px-3 py-2 rounded-xl bg-white border-2 border-black text-xs font-bold text-black shadow-[2px_2px_0px_#000] focus:outline-none"
           >
             <option value="all">All Categories</option>
             {CATEGORIES.map((c) => (
@@ -367,11 +367,11 @@ export default function ComplaintsPage() {
       {/* Complaints Feed List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="p-12 text-center text-slate-400">Loading campus reports...</div>
+          <div className="p-12 text-center text-black font-black">Loading campus reports...</div>
         ) : filteredComplaints.length === 0 ? (
-          <div className="p-12 glass-card rounded-2xl text-center text-slate-400">
-            <AlertTriangle className="w-8 h-8 mx-auto text-slate-600 mb-2" />
-            <p className="text-sm font-semibold text-slate-300">No complaints matching filter criteria.</p>
+          <div className="p-12 bg-white rounded-2xl text-center text-black border-[3px] border-black shadow-[5px_5px_0px_#000]">
+            <AlertTriangle className="w-10 h-10 mx-auto text-black mb-2" />
+            <p className="text-base font-black text-black">No complaints matching filter criteria.</p>
           </div>
         ) : (
           filteredComplaints.map((item) => {
@@ -381,24 +381,24 @@ export default function ComplaintsPage() {
             return (
               <div
                 key={item.id}
-                className="glass-card glass-card-hover p-6 rounded-3xl border border-slate-800 space-y-4"
+                className="bg-white p-6 rounded-2xl border-[2.5px] border-black shadow-[5px_5px_0px_#000] space-y-4 hover:-translate-y-1 hover:shadow-[7px_7px_0px_#000] transition"
               >
                 {/* Header Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs font-bold px-2.5 py-0.5 rounded bg-slate-800 text-blue-400 border border-slate-700">
+                    <span className="font-mono text-xs font-black px-2.5 py-0.5 rounded bg-black text-white border border-black shadow-[1.5px_1.5px_0px_#000]">
                       {item.referenceCode}
                     </span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 capitalize">
+                    <span className="text-xs px-2.5 py-0.5 rounded-md bg-[#FAF7EE] text-black border-2 border-black font-black capitalize shadow-[1.5px_1.5px_0px_#000]">
                       {item.category.replace('_', ' ')}
                     </span>
                     <span
-                      className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                      className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
                         item.priority === 'critical'
-                          ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                          ? 'bg-[#FB7185] text-black'
                           : item.priority === 'high'
-                          ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                          : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                          ? 'bg-[#FB923C] text-black'
+                          : 'bg-[#38BDF8] text-black'
                       }`}
                     >
                       AI Priority: {item.priority} ({item.priorityScore}/100)
@@ -406,16 +406,16 @@ export default function ComplaintsPage() {
                   </div>
 
                   <span
-                    className={`text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ${
+                    className={`text-xs px-3 py-1 rounded-md font-black uppercase tracking-wider border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
                       item.status === 'resolved'
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        ? 'bg-[#A3E635] text-black'
                         : item.status === 'verified_by_student'
-                        ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30'
+                        ? 'bg-[#38BDF8] text-black'
                         : item.status === 'in_progress'
-                        ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                        ? 'bg-[#FFE600] text-black'
                         : item.status === 'triaged'
-                        ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
-                        : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        ? 'bg-[#C084FC] text-black'
+                        : 'bg-neutral-200 text-black'
                     }`}
                   >
                     {item.status.replace(/_/g, ' ')}
@@ -424,18 +424,18 @@ export default function ComplaintsPage() {
 
                 {/* Title & Description */}
                 <div>
-                  <h3 className="text-base font-bold text-white leading-snug">{item.title}</h3>
-                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg font-black text-black leading-snug">{item.title}</h3>
+                  <p className="text-xs font-semibold text-neutral-800 mt-1 leading-relaxed">{item.description}</p>
                 </div>
 
                 {/* Explainable AI Factors */}
                 {item.priorityReasons?.length > 0 && (
-                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 space-y-1">
-                    <span className="font-semibold text-slate-300 flex items-center space-x-1">
-                      <Sparkles className="w-3 h-3 text-cyan-400" />
+                  <div className="p-3.5 rounded-xl bg-[#FEF08A] border-2 border-black shadow-[2.5px_2.5px_0px_#000] text-xs space-y-1">
+                    <span className="font-black text-black flex items-center space-x-1">
+                      <Sparkles className="w-3.5 h-3.5 text-black" />
                       <span>Explainable AI Priority Factors:</span>
                     </span>
-                    <ul className="list-disc list-inside space-y-0.5 text-[10px] text-slate-400">
+                    <ul className="list-disc list-inside space-y-0.5 text-[11px] font-bold text-neutral-900">
                       {item.priorityReasons.map((r, idx) => (
                         <li key={idx}>{r}</li>
                       ))}
@@ -445,18 +445,18 @@ export default function ComplaintsPage() {
 
                 {/* Resolution Evidence Box (if resolved) */}
                 {item.resolutionNotes && (
-                  <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 text-xs space-y-2">
-                    <div className="flex items-center space-x-2 font-bold text-emerald-400">
-                      <FileCheck className="w-4 h-4" />
+                  <div className="p-4 rounded-xl bg-[#A3E635] border-2 border-black shadow-[3px_3px_0px_#000] text-xs space-y-2 text-black">
+                    <div className="flex items-center space-x-2 font-black text-sm">
+                      <FileCheck className="w-4 h-4 text-black" />
                       <span>Verified Resolution Proof Submitted</span>
                     </div>
-                    <p className="text-slate-300 text-[11px] leading-relaxed">{item.resolutionNotes}</p>
+                    <p className="font-semibold text-[11px] leading-relaxed">{item.resolutionNotes}</p>
                     {item.resolutionImageUrl && (
                       <div className="mt-2">
                         <img
                           src={item.resolutionImageUrl}
                           alt="Resolution evidence"
-                          className="max-h-48 rounded-xl object-cover border border-emerald-500/30"
+                          className="max-h-48 rounded-xl object-cover border-2 border-black shadow-[2px_2px_0px_#000]"
                         />
                       </div>
                     )}
@@ -464,36 +464,36 @@ export default function ComplaintsPage() {
                 )}
 
                 {/* Location & Metadata Footer */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800 text-xs text-slate-400">
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t-2 border-black text-xs font-bold text-neutral-800">
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="flex items-center space-x-1">
-                      <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                      <MapPin className="w-3.5 h-3.5 text-black" />
                       <span>{item.campusZone} ({item.locationDetails})</span>
                     </span>
                     <span>·</span>
-                    <span>Dept: <strong className="text-slate-300">{item.assignedDepartment}</strong></span>
+                    <span>Dept: <strong className="text-black">{item.assignedDepartment}</strong></span>
                     <span>·</span>
-                    <span>By: <strong className="text-slate-300">{item.studentName}</strong></span>
+                    <span>By: <strong className="text-black">{item.studentName}</strong></span>
                   </div>
 
                   <div className="flex items-center space-x-2">
                     {/* Upvote Button */}
                     <button
                       onClick={() => handleUpvote(item.id)}
-                      className={`flex items-center space-x-1 px-3 py-1 rounded-xl text-xs font-semibold border transition ${
+                      className={`flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000] transition ${
                         hasUpvoted
-                          ? 'bg-blue-600/20 border-blue-500 text-blue-400'
-                          : 'bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800'
+                          ? 'bg-[#FFE600] text-black'
+                          : 'bg-white text-black hover:bg-neutral-100'
                       }`}
                     >
-                      <TrendingUp className="w-3.5 h-3.5" />
+                      <TrendingUp className="w-3.5 h-3.5 text-black" />
                       <span>{item.upvotes} Upvotes</span>
                     </button>
 
                     {/* View Audit Trail */}
                     <button
                       onClick={() => handleInspectComplaint(item)}
-                      className="px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 transition"
+                      className="px-3 py-1.5 rounded-lg bg-white hover:bg-neutral-100 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition"
                     >
                       Audit Trail
                     </button>
@@ -502,7 +502,7 @@ export default function ComplaintsPage() {
                     {isAuthor && item.status === 'resolved' && (
                       <button
                         onClick={() => handleVerifyResolution(item.id)}
-                        className="px-3 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-md transition"
+                        className="px-3 py-1.5 rounded-lg bg-[#A3E635] hover:bg-lime-400 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition"
                       >
                         Confirm Resolved
                       </button>
@@ -512,7 +512,7 @@ export default function ComplaintsPage() {
                     {isAuthor && !['resolved', 'verified_by_student', 'escalated'].includes(item.status) && (
                       <button
                         onClick={() => handleEscalate(item.id)}
-                        className="px-2.5 py-1 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-semibold border border-rose-500/30 transition"
+                        className="px-2.5 py-1.5 rounded-lg bg-[#FB7185] hover:bg-rose-400 text-black text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000] transition"
                       >
                         Escalate
                       </button>
@@ -527,40 +527,40 @@ export default function ComplaintsPage() {
 
       {/* Submit Complaint Modal */}
       {showSubmitModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-          <div className="w-full max-w-2xl glass-card rounded-3xl p-6 sm:p-8 border border-slate-700 space-y-6 my-8 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 border-[3.5px] border-black shadow-[10px_10px_0px_#000] space-y-6 my-8 max-h-[90vh] overflow-y-auto text-black">
+            <div className="flex items-center justify-between pb-4 border-b-2 border-black">
               <div>
-                <h2 className="text-xl font-bold text-white flex items-center space-x-2">
-                  <AlertTriangle className="w-5 h-5 text-amber-400" />
+                <h2 className="text-xl font-black text-black flex items-center space-x-2">
+                  <AlertTriangle className="w-5 h-5 text-black" />
                   <span>Report Campus Issue</span>
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-semibold text-neutral-700">
                   Earn +25 points on staff triage validation, +50 points on verified resolution.
                 </p>
               </div>
               <button
                 onClick={() => setShowSubmitModal(false)}
-                className="text-slate-400 hover:text-white p-1"
+                className="text-black bg-white hover:bg-[#FB7185] border-2 border-black p-1.5 rounded-lg font-black shadow-[1.5px_1.5px_0px_#000]"
               >
                 ✕
               </button>
             </div>
 
             {submitError && (
-              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-400">
+              <div className="p-3 rounded-xl bg-[#FB7185] border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-black text-black">
                 {submitError}
               </div>
             )}
 
             {/* AI Duplicate Warning Banner */}
             {duplicateMatches.length > 0 && (
-              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs space-y-2">
-                <div className="flex items-center space-x-1.5 font-bold">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+              <div className="p-4 rounded-xl bg-[#FEF08A] border-2 border-black shadow-[3px_3px_0px_#000] text-black text-xs space-y-2">
+                <div className="flex items-center space-x-1.5 font-black">
+                  <Sparkles className="w-4 h-4 text-black" />
                   <span>Local AI: Potential Duplicate Issue Detected ({Math.round(duplicateMatches[0].similarityScore * 100)}% match)</span>
                 </div>
-                <p className="text-slate-300 text-[11px]">
+                <p className="font-semibold text-neutral-900 text-[11px]">
                   Existing ticket <strong>{duplicateMatches[0].complaint.referenceCode}</strong>: &quot;{duplicateMatches[0].complaint.title}&quot; in {duplicateMatches[0].complaint.campusZone}. Consider upvoting existing reports to speed up priority triage!
                 </p>
               </div>
@@ -568,20 +568,20 @@ export default function ComplaintsPage() {
 
             {/* AI Explainable Priority Live Preview */}
             {aiAnalysis && (
-              <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-500/30 text-xs space-y-2">
+              <div className="p-4 rounded-xl bg-[#38BDF8] border-2 border-black shadow-[3px_3px_0px_#000] text-black text-xs space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-blue-400 flex items-center space-x-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
+                  <span className="font-black text-black flex items-center space-x-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-black" />
                     <span>Explainable AI Assessment</span>
                   </span>
-                  <span className="font-mono font-bold uppercase text-[11px] px-2 py-0.5 rounded bg-blue-600/20 text-blue-300 border border-blue-500/30">
+                  <span className="font-mono font-black uppercase text-[11px] px-2 py-0.5 rounded bg-white text-black border-2 border-black shadow-[1px_1px_0px_#000]">
                     {aiAnalysis.priority} Priority ({aiAnalysis.score}/100)
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-300">
-                  Suggested Routing: <strong className="text-white">{aiAnalysis.suggestedDepartment}</strong>
+                <p className="text-[11px] font-bold text-black">
+                  Suggested Routing: <strong className="underline">{aiAnalysis.suggestedDepartment}</strong>
                 </p>
-                <div className="text-[10px] text-slate-400 space-y-0.5">
+                <div className="text-[10px] font-bold text-neutral-900 space-y-0.5">
                   {aiAnalysis.reasons.map((r, i) => (
                     <p key={i}>• {r}</p>
                   ))}
@@ -591,24 +591,24 @@ export default function ComplaintsPage() {
 
             <form onSubmit={handleSubmitComplaint} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Issue Title</label>
+                <label className="block text-xs font-black text-black mb-1">Issue Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Exposed live wire with sparks in corridor..."
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4.5px_4.5px_0px_#000] outline-none"
                   required
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Category</label>
+                  <label className="block text-xs font-black text-black mb-1">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as ComplaintCategory)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] outline-none"
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -619,11 +619,11 @@ export default function ComplaintsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Campus Zone</label>
+                  <label className="block text-xs font-black text-black mb-1">Campus Zone</label>
                   <select
                     value={campusZone}
                     onChange={(e) => setCampusZone(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] outline-none"
                   >
                     {CAMPUS_ZONES.map((z) => (
                       <option key={z} value={z}>
@@ -635,37 +635,37 @@ export default function ComplaintsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Specific Location Details</label>
+                <label className="block text-xs font-black text-black mb-1">Specific Location Details</label>
                 <input
                   type="text"
                   placeholder="e.g. 3rd Floor corridor, outside Room 314 next to water dispenser"
                   value={locationDetails}
                   onChange={(e) => setLocationDetails(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4.5px_4.5px_0px_#000] outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Detailed Description</label>
+                <label className="block text-xs font-black text-black mb-1">Detailed Description</label>
                 <textarea
                   rows={3}
                   placeholder="Describe the defect, safety hazard, or disruption clearly..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4.5px_4.5px_0px_#000] outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Photo Evidence URL (Optional)</label>
+                <label className="block text-xs font-black text-black mb-1">Photo Evidence URL (Optional)</label>
                 <input
                   type="url"
                   placeholder="https://images.unsplash.com/... or campus private upload URL"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4.5px_4.5px_0px_#000] outline-none"
                 />
               </div>
 
@@ -675,25 +675,25 @@ export default function ComplaintsPage() {
                   id="anonCheck"
                   checked={isAnonymous}
                   onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0"
+                  className="w-4 h-4 border-2 border-black rounded"
                 />
-                <label htmlFor="anonCheck" className="text-xs text-slate-300">
+                <label htmlFor="anonCheck" className="text-xs font-bold text-neutral-800">
                   Submit anonymously to public feed (Identity preserved in secure proctorial audit log)
                 </label>
               </div>
 
-              <div className="flex items-center space-x-3 pt-4 border-t border-slate-800">
+              <div className="flex items-center space-x-3 pt-4 border-t-2 border-black">
                 <button
                   type="button"
                   onClick={() => setShowSubmitModal(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-700"
+                  className="flex-1 py-2.5 rounded-xl bg-white border-2 border-black text-xs font-black text-black shadow-[2px_2px_0px_#000] hover:bg-neutral-100"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || !title || !description}
-                  className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 disabled:bg-slate-800 disabled:text-slate-600"
+                  className="flex-1 py-2.5 rounded-xl bg-[#FFE600] hover:bg-yellow-300 text-xs font-black text-black border-2 border-black shadow-[3px_3px_0px_#000] disabled:bg-neutral-200"
                 >
                   {isSubmitting ? 'Logging Ticket...' : 'Submit Report'}
                 </button>
@@ -705,16 +705,16 @@ export default function ComplaintsPage() {
 
       {/* Audit Logs Modal */}
       {inspectComplaint && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="w-full max-w-lg glass-card rounded-3xl p-6 border border-slate-700 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="w-full max-w-lg bg-white rounded-3xl p-6 border-[3.5px] border-black shadow-[8px_8px_0px_#000] space-y-4 text-black">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black">
               <div>
-                <span className="font-mono text-xs font-bold text-blue-400">{inspectComplaint.referenceCode}</span>
-                <h3 className="font-bold text-base text-white">Full Lifecycle Audit Trail</h3>
+                <span className="font-mono text-xs font-black text-black bg-[#38BDF8] px-2 py-0.5 rounded border border-black">{inspectComplaint.referenceCode}</span>
+                <h3 className="font-black text-lg text-black mt-1">Full Lifecycle Audit Trail</h3>
               </div>
               <button
                 onClick={() => setInspectComplaint(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-black bg-white hover:bg-[#FB7185] border-2 border-black p-1.5 rounded-lg font-black shadow-[1.5px_1.5px_0px_#000]"
               >
                 ✕
               </button>
@@ -722,22 +722,22 @@ export default function ComplaintsPage() {
 
             <div className="max-h-80 overflow-y-auto space-y-3 pr-1">
               {loadingLogs ? (
-                <p className="text-xs text-slate-400 py-6 text-center">Loading audit logs...</p>
+                <p className="text-xs font-bold text-neutral-500 py-6 text-center">Loading audit logs...</p>
               ) : auditLogs.length === 0 ? (
-                <p className="text-xs text-slate-400 py-6 text-center">No audit records recorded yet.</p>
+                <p className="text-xs font-bold text-neutral-500 py-6 text-center">No audit records recorded yet.</p>
               ) : (
                 auditLogs.map((log) => (
-                  <div key={log.id} className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1">
+                  <div key={log.id} className="p-3.5 rounded-xl bg-[#FAF7EE] border-2 border-black shadow-[2px_2px_0px_#000] text-xs space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-white capitalize">{log.action.replace(/_/g, ' ')}</span>
-                      <span className="text-[10px] text-slate-500">
+                      <span className="font-black text-black capitalize">{log.action.replace(/_/g, ' ')}</span>
+                      <span className="text-[10px] font-bold text-neutral-600">
                         {new Date(log.timestamp).toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-300">{log.details}</p>
-                    <div className="flex items-center space-x-1 text-[10px] text-slate-500 pt-1">
+                    <p className="text-[11px] font-medium text-neutral-800">{log.details}</p>
+                    <div className="flex items-center space-x-1 text-[10px] font-bold text-neutral-600 pt-1">
                       <span>Actor:</span>
-                      <strong className="text-slate-400">{log.actorName}</strong>
+                      <strong className="text-black">{log.actorName}</strong>
                       <span>({log.actorRole})</span>
                     </div>
                   </div>
@@ -747,7 +747,7 @@ export default function ComplaintsPage() {
 
             <button
               onClick={() => setInspectComplaint(null)}
-              className="w-full py-2 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300"
+              className="w-full py-2.5 rounded-xl bg-white border-2 border-black text-xs font-black text-black shadow-[2px_2px_0px_#000] hover:bg-neutral-100"
             >
               Close History
             </button>
@@ -757,3 +757,4 @@ export default function ComplaintsPage() {
     </div>
   );
 }
+

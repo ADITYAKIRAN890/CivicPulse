@@ -129,10 +129,12 @@ export default function DepartmentPortalPage() {
 
   if (!loading && !isStaffOrAdmin) {
     return (
-      <div className="p-12 glass-card rounded-3xl text-center space-y-4 max-w-lg mx-auto">
-        <Building2 className="w-12 h-12 text-rose-400 mx-auto" />
-        <h2 className="text-xl font-bold text-white">Department Facilities Access Restricted</h2>
-        <p className="text-xs text-slate-400">
+      <div className="p-8 sm:p-12 bg-white rounded-3xl text-center space-y-4 max-w-lg mx-auto border-[3.5px] border-black shadow-[8px_8px_0px_#000] text-black">
+        <div className="w-16 h-16 rounded-2xl bg-[#FB7185] border-2 border-black shadow-[3px_3px_0px_#000] flex items-center justify-center mx-auto text-black">
+          <Building2 className="w-8 h-8 text-black" />
+        </div>
+        <h2 className="text-2xl font-black text-black">Department Facilities Access Restricted</h2>
+        <p className="text-xs font-bold text-neutral-700 leading-relaxed">
           You are currently signed in as <strong>{currentUser?.fullName}</strong> ({currentUser?.role}).
           To evaluate this department staff workflow, switch to <strong>Rajesh Kumar (Dept Staff)</strong> using the top Persona Switcher.
         </p>
@@ -145,141 +147,153 @@ export default function DepartmentPortalPage() {
   );
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-black">
       {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#FB923C] border-[3.5px] border-black shadow-[6px_6px_0px_#000] flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center space-x-2 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <Building2 className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-black uppercase tracking-wider mb-3">
+            <Building2 className="w-4 h-4 text-black" />
             <span>Facilities Operations & Work Orders Desk</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-black tracking-tight">
             Facilities Triage & Resolution
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-1 max-w-xl">
             Validate student reports (+25 pts milestone), dispatch repair crews, and attach photographic proof (+50 pts milestone).
           </p>
         </div>
 
-        <div className="p-3 rounded-2xl glass-card border border-cyan-500/30 text-xs">
-          <span className="text-slate-400 block text-[10px]">Logged in as Staff:</span>
-          <span className="font-bold text-white">{currentUser?.fullName}</span>
-          <span className="text-cyan-400 block text-[11px]">{currentUser?.department || 'Facilities Ops'}</span>
+        <div className="p-4 rounded-2xl bg-white border-2 border-black shadow-[4px_4px_0px_#000] text-xs">
+          <span className="text-neutral-600 block text-[10px] font-bold">Logged in as Staff:</span>
+          <span className="font-black text-base text-black block">{currentUser?.fullName}</span>
+          <span className="font-mono font-black text-black bg-[#FFE600] px-2 py-0.5 rounded border border-black inline-block mt-1 text-[11px]">
+            {currentUser?.department || 'Facilities Ops'}
+          </span>
         </div>
       </div>
 
       {/* Ticket List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-white">Active Campus Work Orders ({activeTickets.length})</h2>
-          <span className="text-xs text-slate-400">Sorted by Priority Score</span>
+          <h2 className="text-base font-black text-black">Active Campus Work Orders ({activeTickets.length})</h2>
+          <span className="text-xs font-black text-neutral-700 bg-white px-3 py-1 rounded-lg border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
+            Sorted by Priority Score
+          </span>
         </div>
 
         <div className="space-y-4">
-          {activeTickets.map((item) => (
-            <div
-              key={item.id}
-              className="glass-card p-6 rounded-3xl border border-slate-800 space-y-4"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-800 text-blue-400 border border-slate-700">
-                    {item.referenceCode}
-                  </span>
+          {activeTickets.length === 0 ? (
+            <div className="bg-white rounded-3xl p-12 text-center text-black border-[3px] border-black shadow-[5px_5px_0px_#000] space-y-2">
+              <CheckCircle2 className="w-12 h-12 text-black mx-auto mb-2" />
+              <p className="text-base font-black text-black">No active work orders pending!</p>
+              <p className="text-xs font-bold text-neutral-600">All student reports have been verified and closed.</p>
+            </div>
+          ) : (
+            activeTickets.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white p-6 rounded-3xl border-2 border-black shadow-[4px_4px_0px_#000] space-y-4"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-xs font-black px-2.5 py-0.5 rounded bg-[#FFE600] text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
+                      {item.referenceCode}
+                    </span>
+                    <span
+                      className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
+                        item.priority === 'critical'
+                          ? 'bg-[#FB7185] text-black'
+                          : item.priority === 'high'
+                          ? 'bg-[#FB923C] text-black'
+                          : 'bg-[#38BDF8] text-black'
+                      }`}
+                    >
+                      {item.priority} priority ({item.priorityScore}/100)
+                    </span>
+                    <span className="text-xs font-bold text-neutral-800">
+                      Zone: <strong className="text-black underline">{item.campusZone}</strong>
+                    </span>
+                  </div>
+
                   <span
-                    className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
-                      item.priority === 'critical'
-                        ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
-                        : item.priority === 'high'
-                        ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                        : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                    className={`text-xs px-3 py-1 rounded-full font-black uppercase border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
+                      item.status === 'resolved'
+                        ? 'bg-[#A3E635] text-black'
+                        : item.status === 'in_progress'
+                        ? 'bg-[#38BDF8] text-black'
+                        : 'bg-[#FEF08A] text-black'
                     }`}
                   >
-                    {item.priority} priority ({item.priorityScore}/100)
-                  </span>
-                  <span className="text-xs text-slate-400">
-                    Zone: <strong className="text-slate-300">{item.campusZone}</strong>
+                    {item.status.replace(/_/g, ' ')}
                   </span>
                 </div>
 
-                <span
-                  className={`text-xs px-2.5 py-0.5 rounded-full font-bold uppercase ${
-                    item.status === 'resolved'
-                      ? 'bg-emerald-500/20 text-emerald-400'
-                      : item.status === 'in_progress'
-                      ? 'bg-blue-500/20 text-blue-400'
-                      : 'bg-amber-500/20 text-amber-400'
-                  }`}
-                >
-                  {item.status.replace(/_/g, ' ')}
-                </span>
-              </div>
-
-              <div>
-                <h3 className="text-base font-bold text-white">{item.title}</h3>
-                <p className="text-xs text-slate-300 mt-1">{item.description}</p>
-                <p className="text-[11px] text-slate-400 mt-1 flex items-center space-x-1">
-                  <MapPin className="w-3.5 h-3.5 text-slate-500" />
-                  <span>{item.locationDetails}</span>
-                </p>
-              </div>
-
-              {/* Action Buttons for Facilities Staff */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-800">
-                <div className="text-xs text-slate-400">
-                  Reported by: <span className="text-white">{item.studentName}</span>
+                <div>
+                  <h3 className="text-lg font-black text-black">{item.title}</h3>
+                  <p className="text-xs font-semibold text-neutral-800 mt-1">{item.description}</p>
+                  <p className="text-[11px] font-bold text-neutral-600 mt-1 flex items-center space-x-1">
+                    <MapPin className="w-3.5 h-3.5 text-black" />
+                    <span>{item.locationDetails}</span>
+                  </p>
                 </div>
 
-                <div className="flex items-center space-x-2">
-                  {item.status === 'submitted' && (
-                    <button
-                      onClick={() => handleTriage(item.id)}
-                      className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow-md transition"
-                    >
-                      Triage & Validate (+25 pts to student)
-                    </button>
-                  )}
+                {/* Action Buttons for Facilities Staff */}
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t-2 border-black">
+                  <div className="text-xs font-bold text-neutral-700">
+                    Reported by: <span className="font-black text-black">{item.studentName}</span>
+                  </div>
 
-                  {['submitted', 'triaged'].includes(item.status) && (
-                    <button
-                      onClick={() => handleSetInProgress(item.id)}
-                      className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-md transition"
-                    >
-                      Dispatch Crew (In Progress)
-                    </button>
-                  )}
+                  <div className="flex items-center space-x-2">
+                    {item.status === 'submitted' && (
+                      <button
+                        onClick={() => handleTriage(item.id)}
+                        className="px-3.5 py-2 rounded-xl bg-[#FFE600] hover:bg-yellow-300 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
+                      >
+                        Triage & Validate (+25 pts)
+                      </button>
+                    )}
 
-                  {item.status !== 'resolved' && (
-                    <button
-                      onClick={() => {
-                        setResolvingComplaint(item);
-                        setResolutionNotes('');
-                        setResolutionImageUrl('');
-                      }}
-                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-md transition"
-                    >
-                      Resolve with Proof (+50 pts)
-                    </button>
-                  )}
+                    {['submitted', 'triaged'].includes(item.status) && (
+                      <button
+                        onClick={() => handleSetInProgress(item.id)}
+                        className="px-3.5 py-2 rounded-xl bg-[#38BDF8] hover:bg-sky-300 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
+                      >
+                        Dispatch Crew (In Progress)
+                      </button>
+                    )}
+
+                    {item.status !== 'resolved' && (
+                      <button
+                        onClick={() => {
+                          setResolvingComplaint(item);
+                          setResolutionNotes('');
+                          setResolutionImageUrl('');
+                        }}
+                        className="px-3.5 py-2 rounded-xl bg-[#A3E635] hover:bg-lime-400 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
+                      >
+                        Resolve with Proof (+50 pts)
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
       {/* Resolution Proof Submission Modal */}
       {resolvingComplaint && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="w-full max-w-lg glass-card rounded-3xl p-6 border border-slate-700 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 border-[3.5px] border-black shadow-[10px_10px_0px_#000] space-y-4 text-black">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black">
               <div>
-                <h3 className="font-bold text-base text-white">Submit Resolution Evidence</h3>
-                <p className="text-xs text-slate-400">Ticket: {resolvingComplaint.referenceCode}</p>
+                <h3 className="font-black text-lg text-black">Submit Resolution Evidence</h3>
+                <p className="text-xs font-mono font-bold text-neutral-700">Ticket: {resolvingComplaint.referenceCode}</p>
               </div>
               <button
                 onClick={() => setResolvingComplaint(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-black bg-white hover:bg-[#FB7185] border-2 border-black p-1.5 rounded-lg font-black shadow-[1.5px_1.5px_0px_#000]"
               >
                 ✕
               </button>
@@ -287,7 +301,7 @@ export default function DepartmentPortalPage() {
 
             <form onSubmit={handleCompleteResolution} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">
+                <label className="block text-xs font-black text-black mb-1">
                   Resolution Work Done Details
                 </label>
                 <textarea
@@ -296,12 +310,12 @@ export default function DepartmentPortalPage() {
                   placeholder="e.g. Replaced faulty circuit breaker, sanitized filter, re-crimped loose CAT6 cable..."
                   value={resolutionNotes}
                   onChange={(e) => setResolutionNotes(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4.5px_4.5px_0px_#000] outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">
+                <label className="block text-xs font-black text-black mb-1">
                   Resolution Photographic Evidence URL
                 </label>
                 <input
@@ -309,25 +323,25 @@ export default function DepartmentPortalPage() {
                   placeholder="https://images.unsplash.com/... or campus storage URL"
                   value={resolutionImageUrl}
                   onChange={(e) => setResolutionImageUrl(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4.5px_4.5px_0px_#000] outline-none"
                 />
-                <p className="text-[10px] text-slate-500 mt-1">
+                <p className="text-[11px] font-bold text-neutral-600 mt-1">
                   Photo proof will be visible on the public ticket for student verification.
                 </p>
               </div>
 
-              <div className="flex items-center space-x-2 pt-3 border-t border-slate-800">
+              <div className="flex items-center space-x-3 pt-3 border-t-2 border-black">
                 <button
                   type="button"
                   onClick={() => setResolvingComplaint(null)}
-                  className="flex-1 py-2 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300"
+                  className="flex-1 py-2.5 rounded-xl bg-white border-2 border-black text-xs font-black text-black shadow-[2px_2px_0px_#000] hover:bg-neutral-100"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmittingResolution || !resolutionNotes}
-                  className="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-md disabled:bg-slate-800"
+                  className="flex-1 py-2.5 rounded-xl bg-[#A3E635] hover:bg-lime-400 text-xs font-black text-black border-2 border-black shadow-[3px_3px_0px_#000] disabled:bg-neutral-200 transition active:translate-x-0.5 active:translate-y-0.5"
                 >
                   {isSubmittingResolution ? 'Saving...' : 'Certify Resolved & Award +50 pts'}
                 </button>

@@ -110,10 +110,12 @@ export default function DoctorPortalPage() {
 
   if (!loading && !isAuthorized) {
     return (
-      <div className="p-12 glass-card rounded-3xl text-center space-y-4 max-w-lg mx-auto">
-        <Stethoscope className="w-12 h-12 text-rose-400 mx-auto" />
-        <h2 className="text-xl font-bold text-white">Doctor Portal Access Restricted</h2>
-        <p className="text-xs text-slate-400">
+      <div className="p-8 sm:p-12 bg-white rounded-3xl text-center space-y-4 max-w-lg mx-auto border-[3.5px] border-black shadow-[8px_8px_0px_#000] text-black">
+        <div className="w-16 h-16 rounded-2xl bg-[#FB7185] border-2 border-black shadow-[3px_3px_0px_#000] flex items-center justify-center mx-auto text-black">
+          <Stethoscope className="w-8 h-8 text-black" />
+        </div>
+        <h2 className="text-2xl font-black text-black">Doctor Portal Access Restricted</h2>
+        <p className="text-xs font-bold text-neutral-700 leading-relaxed">
           You are currently signed in as <strong>{currentUser?.fullName}</strong> ({currentUser?.role}).
           To test this interface, use the <strong>Persona Switcher</strong> in the top header and switch to <strong>Dr. Priya Patel</strong>.
         </p>
@@ -126,41 +128,41 @@ export default function DoctorPortalPage() {
   );
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-black">
       {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#A3E635] border-[3.5px] border-black shadow-[6px_6px_0px_#000] flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <Stethoscope className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-black uppercase tracking-wider mb-3">
+            <Stethoscope className="w-4 h-4 text-black" />
             <span>Clinic Staff & Physician Command Center</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-black tracking-tight">
             Doctor Consultation Workspace
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-1 max-w-xl">
             Manage patient queue, consultation attendance, clinic cabin availability, and leave dates.
           </p>
         </div>
 
         {doctorProfile && (
-          <div className="flex items-center space-x-3 p-3 rounded-2xl glass-card border border-emerald-500/30">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+          <div className="flex items-center space-x-3 p-4 rounded-2xl bg-white border-2 border-black shadow-[4px_4px_0px_#000]">
+            <div className="w-12 h-12 rounded-xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] text-black flex items-center justify-center font-black text-lg">
               Dr
             </div>
             <div>
-              <h3 className="font-bold text-sm text-white">{doctorProfile.fullName}</h3>
-              <p className="text-xs text-emerald-400">{doctorProfile.specialization}</p>
-              <p className="text-[10px] text-slate-400">{doctorProfile.clinicCabin}</p>
+              <h3 className="font-black text-sm text-black">{doctorProfile.fullName}</h3>
+              <p className="text-xs font-bold text-neutral-800">{doctorProfile.specialization}</p>
+              <p className="text-[11px] font-black text-neutral-600 font-mono">{doctorProfile.clinicCabin}</p>
             </div>
           </div>
         )}
       </div>
 
       {/* Medical Privacy Reminder */}
-      <div className="p-4 rounded-2xl glass-card border border-emerald-900/40 bg-emerald-950/20 flex items-start space-x-3">
-        <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-        <div className="text-xs text-slate-300">
-          <span className="font-bold text-white block">Medical Confidentiality Standard</span>
+      <div className="p-4 rounded-2xl bg-[#FEF08A] border-2 border-black shadow-[3px_3px_0px_#000] flex items-start space-x-3">
+        <ShieldCheck className="w-5 h-5 text-black shrink-0 mt-0.5" />
+        <div className="text-xs text-neutral-900">
+          <span className="font-black text-black block text-sm">Medical Confidentiality Standard</span>
           This campus hub handles scheduling and queue logistics only. Do not input detailed diagnoses, private medical histories, or prescriptions into public fields.
         </div>
       </div>
@@ -170,13 +172,13 @@ export default function DoctorPortalPage() {
         {/* Left 2 Cols: Queue */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <Activity className="w-4 h-4 text-emerald-400" />
+            <h2 className="text-base font-black text-black flex items-center space-x-2">
+              <Activity className="w-4 h-4 text-black" />
               <span>Active Consultations Queue ({activeConsultations.length})</span>
             </h2>
             <button
               onClick={loadDoctorData}
-              className="text-xs text-blue-400 hover:text-blue-300 flex items-center space-x-1"
+              className="px-3 py-1.5 rounded-lg bg-white hover:bg-neutral-100 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] flex items-center space-x-1.5 transition active:translate-x-0.5 active:translate-y-0.5"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Refresh Queue</span>
@@ -184,46 +186,50 @@ export default function DoctorPortalPage() {
           </div>
 
           {activeConsultations.length === 0 ? (
-            <div className="glass-card rounded-2xl p-12 text-center text-slate-400">
-              <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
-              <p className="text-sm font-semibold text-white">All caught up! No waiting patients.</p>
-              <p className="text-xs text-slate-500 mt-1">Confirmed bookings will appear here in chronological order.</p>
+            <div className="bg-white rounded-3xl p-12 text-center text-black border-[3px] border-black shadow-[5px_5px_0px_#000] space-y-2">
+              <div className="w-14 h-14 rounded-2xl bg-[#A3E635] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center mx-auto text-black">
+                <CheckCircle2 className="w-8 h-8 text-black" />
+              </div>
+              <p className="text-base font-black text-black">All caught up! No waiting patients.</p>
+              <p className="text-xs font-bold text-neutral-600">Confirmed bookings will appear here in real-time chronological order.</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {activeConsultations.map((apt) => (
                 <div
                   key={apt.id}
-                  className="glass-card p-5 rounded-2xl border border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  className="bg-white p-5 rounded-2xl border-2 border-black shadow-[4px_4px_0px_#000] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                 >
-                  <div className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <div className="space-y-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-xs font-black px-2.5 py-0.5 rounded bg-[#38BDF8] text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
                         {apt.referenceCode}
                       </span>
-                      <span className="text-xs text-slate-400 flex items-center space-x-1">
-                        <Clock className="w-3 h-3 text-slate-500" />
+                      <span className="text-xs font-bold text-neutral-800 flex items-center space-x-1">
+                        <Clock className="w-3.5 h-3.5 text-black" />
                         <span>{apt.date} at {apt.timeSlot}</span>
                       </span>
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
+                        className={`text-[10px] font-black px-2.5 py-0.5 rounded uppercase border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
                           apt.status === 'in_consultation'
-                            ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                            : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            ? 'bg-[#FFE600] text-black'
+                            : 'bg-[#A3E635] text-black'
                         }`}
                       >
                         {apt.status.replace(/_/g, ' ')}
                       </span>
                     </div>
 
-                    <h4 className="text-sm font-bold text-white pt-1">
+                    <h4 className="text-base font-black text-black pt-1">
                       {apt.studentName} ({apt.studentRollNumber || 'Student'})
                     </h4>
-                    <p className="text-xs text-slate-300">
-                      Reason: <strong className="text-white">{apt.reasonCategory}</strong>
+                    <p className="text-xs font-bold text-neutral-800">
+                      Reason: <strong className="text-black underline">{apt.reasonCategory}</strong>
                     </p>
                     {apt.notes && (
-                      <p className="text-[11px] text-slate-400 italic">Notes: {apt.notes}</p>
+                      <p className="text-[11px] font-medium text-neutral-700 italic bg-[#FAF7EE] p-2 rounded-lg border border-black">
+                        Notes: {apt.notes}
+                      </p>
                     )}
                   </div>
 
@@ -233,7 +239,7 @@ export default function DoctorPortalPage() {
                       <button
                         onClick={() => handleUpdateStatus(apt.id, 'in_consultation')}
                         disabled={isUpdatingStatus === apt.id}
-                        className="py-1.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-md transition"
+                        className="py-2 px-3.5 rounded-xl bg-[#FFE600] hover:bg-yellow-300 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
                       >
                         Start Consultation
                       </button>
@@ -242,7 +248,7 @@ export default function DoctorPortalPage() {
                     <button
                       onClick={() => handleUpdateStatus(apt.id, 'completed')}
                       disabled={isUpdatingStatus === apt.id}
-                      className="py-1.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-md transition"
+                      className="py-2 px-3.5 rounded-xl bg-[#A3E635] hover:bg-lime-400 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
                     >
                       Mark Completed
                     </button>
@@ -253,7 +259,7 @@ export default function DoctorPortalPage() {
                         if (reason) handleUpdateStatus(apt.id, 'cancelled_by_doctor', reason);
                       }}
                       disabled={isUpdatingStatus === apt.id}
-                      className="py-1.5 px-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-semibold border border-rose-500/20 transition"
+                      className="py-2 px-3 rounded-xl bg-[#FB7185] hover:bg-rose-400 text-black text-xs font-black border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
                     >
                       No Show / Cancel
                     </button>
@@ -266,12 +272,12 @@ export default function DoctorPortalPage() {
 
         {/* Right Col: Block Dates & Availability */}
         <div className="space-y-6">
-          <div className="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
-            <h2 className="text-base font-bold text-white flex items-center space-x-2">
-              <Ban className="w-4 h-4 text-rose-400" />
+          <div className="bg-white p-6 rounded-3xl border-[3px] border-black shadow-[5px_5px_0px_#000] space-y-4">
+            <h2 className="text-base font-black text-black flex items-center space-x-2">
+              <Ban className="w-4 h-4 text-black" />
               <span>Block Dates & Leave</span>
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs font-bold text-neutral-700">
               Mark emergency leave or conference days to automatically prevent students from booking slots on those dates.
             </p>
 
@@ -281,7 +287,7 @@ export default function DoctorPortalPage() {
                 min={todayString}
                 value={blockedDateInput}
                 onChange={(e) => setBlockedDateInput(e.target.value)}
-                className="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs"
+                className="flex-1 px-3 py-2 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2px_2px_0px_#000] outline-none"
               />
               <button
                 onClick={() => {
@@ -291,27 +297,27 @@ export default function DoctorPortalPage() {
                   }
                 }}
                 disabled={!blockedDateInput}
-                className="py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:bg-slate-800 text-white font-bold text-xs"
+                className="py-2 px-3.5 rounded-xl bg-[#FB7185] hover:bg-rose-400 disabled:bg-neutral-200 text-black font-black text-xs border-2 border-black shadow-[2px_2px_0px_#000] transition active:translate-x-0.5 active:translate-y-0.5"
               >
                 Block Date
               </button>
             </div>
 
-            <div className="pt-3 border-t border-slate-800 space-y-2">
-              <span className="text-xs font-bold text-slate-300 block">Currently Blocked Dates:</span>
+            <div className="pt-4 border-t-2 border-black space-y-2">
+              <span className="text-xs font-black text-black block">Currently Blocked Dates:</span>
               {doctorProfile?.blockedDates?.length === 0 ? (
-                <p className="text-[11px] text-slate-500 italic">No blocked dates. Fully available for consultations.</p>
+                <p className="text-[11px] font-bold text-neutral-500 italic">No blocked dates. Fully available for consultations.</p>
               ) : (
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   {doctorProfile?.blockedDates?.map((d) => (
                     <div
                       key={d}
-                      className="p-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs"
+                      className="p-2.5 rounded-xl bg-[#FAF7EE] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-between text-xs"
                     >
-                      <span className="font-semibold text-rose-300">{d}</span>
+                      <span className="font-mono font-black text-black">{d}</span>
                       <button
                         onClick={() => handleToggleBlockDate(d, 'unblock')}
-                        className="text-[10px] text-slate-400 hover:text-white underline"
+                        className="text-xs font-black text-black bg-white hover:bg-[#FB7185] px-2 py-0.5 rounded border border-black shadow-[1px_1px_0px_#000]"
                       >
                         Unblock
                       </button>

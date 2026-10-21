@@ -180,18 +180,18 @@ export default function PeopleDirectoryPage() {
   });
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 text-black">
       {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#C084FC] border-[3px] border-black shadow-[6px_6px_0px_#000] rounded-2xl p-6 sm:p-8">
         <div>
-          <div className="flex items-center space-x-2 text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">
-            <Users className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 bg-black text-white px-2.5 py-0.5 rounded text-xs font-black uppercase tracking-wider border border-black shadow-[1.5px_1.5px_0px_#000] mb-2">
+            <Users className="w-4 h-4 text-[#C084FC]" />
             <span>Campus Registry & Member Database</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-black text-black tracking-tight">
             People & Directory Database
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm font-semibold text-neutral-800 mt-1">
             Add new students, doctors, department staff, grievance officers, and cafeteria operators directly into the database.
           </p>
         </div>
@@ -201,83 +201,83 @@ export default function PeopleDirectoryPage() {
             setShowAddModal(true);
             setFormError(null);
           }}
-          className="flex items-center space-x-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold text-sm shadow-xl shadow-blue-500/25 transition hover:-translate-y-0.5 self-start md:self-auto cursor-pointer"
+          className="flex items-center space-x-2 px-5 py-3 rounded-xl bg-[#FFE600] hover:bg-[#FFF066] text-black font-black text-sm border-[2.5px] border-black shadow-[4px_4px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] transition self-start md:self-auto cursor-pointer"
         >
-          <UserPlus className="w-5 h-5" />
+          <UserPlus className="w-5 h-5 text-black" />
           <span>+ Add New Person to Database</span>
         </button>
       </div>
 
       {/* Success Banner */}
       {successBanner && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between">
-          <div className="flex items-center space-x-2 font-bold">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="p-4 rounded-xl bg-[#A3E635] border-2 border-black shadow-[3px_3px_0px_#000] text-black text-xs flex items-center justify-between font-black">
+          <div className="flex items-center space-x-2">
+            <CheckCircle2 className="w-5 h-5 text-black" />
             <span>{successBanner}</span>
           </div>
-          <button onClick={() => setSuccessBanner(null)} className="text-slate-400 hover:text-white">✕</button>
+          <button onClick={() => setSuccessBanner(null)} className="text-black hover:bg-black hover:text-white px-2 py-0.5 rounded border border-black font-bold">✕</button>
         </div>
       )}
 
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="glass-card p-4 rounded-2xl">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Total People</span>
-          <span className="text-2xl font-black text-white mt-1 block">{loading ? '...' : roleCounts.total || 0}</span>
-          <span className="text-[10px] text-blue-400 mt-0.5 block">In Database</span>
+        <div className="bg-white border-2 border-black shadow-[3.5px_3.5px_0px_#000] p-4 rounded-xl hover:-translate-y-0.5 transition">
+          <span className="text-[10px] uppercase font-black text-neutral-700 block">Total People</span>
+          <span className="text-3xl font-black text-black mt-1 block">{loading ? '...' : roleCounts.total || 0}</span>
+          <span className="text-[10px] font-bold text-neutral-800 mt-0.5 block">In Database</span>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Students</span>
-          <span className="text-2xl font-black text-blue-400 mt-1 block">{loading ? '...' : roleCounts.student || 0}</span>
-          <span className="text-[10px] text-slate-400 mt-0.5 block">Active Learners</span>
+        <div className="bg-white border-2 border-black shadow-[3.5px_3.5px_0px_#000] p-4 rounded-xl hover:-translate-y-0.5 transition">
+          <span className="text-[10px] uppercase font-black text-neutral-700 block">Students</span>
+          <span className="text-3xl font-black text-black mt-1 block">{loading ? '...' : roleCounts.student || 0}</span>
+          <span className="text-[10px] font-bold text-neutral-800 mt-0.5 block">Learners (+Wallet)</span>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Doctors</span>
-          <span className="text-2xl font-black text-emerald-400 mt-1 block">{loading ? '...' : roleCounts.doctor || 0}</span>
-          <span className="text-[10px] text-slate-400 mt-0.5 block">Clinic Specialists</span>
+        <div className="bg-white border-2 border-black shadow-[3.5px_3.5px_0px_#000] p-4 rounded-xl hover:-translate-y-0.5 transition">
+          <span className="text-[10px] uppercase font-black text-neutral-700 block">Doctors</span>
+          <span className="text-3xl font-black text-black mt-1 block">{loading ? '...' : roleCounts.doctor || 0}</span>
+          <span className="text-[10px] font-bold text-neutral-800 mt-0.5 block">Clinic Directory</span>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Facilities</span>
-          <span className="text-2xl font-black text-amber-400 mt-1 block">{loading ? '...' : roleCounts.department_staff || 0}</span>
-          <span className="text-[10px] text-slate-400 mt-0.5 block">Staff Engineers</span>
+        <div className="bg-white border-2 border-black shadow-[3.5px_3.5px_0px_#000] p-4 rounded-xl hover:-translate-y-0.5 transition">
+          <span className="text-[10px] uppercase font-black text-neutral-700 block">Facilities</span>
+          <span className="text-3xl font-black text-black mt-1 block">{loading ? '...' : roleCounts.department_staff || 0}</span>
+          <span className="text-[10px] font-bold text-neutral-800 mt-0.5 block">Work Ops</span>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">ICC Officers</span>
-          <span className="text-2xl font-black text-purple-400 mt-1 block">{loading ? '...' : roleCounts.grievance_officer || 0}</span>
-          <span className="text-[10px] text-slate-400 mt-0.5 block">Ethics Directorate</span>
+        <div className="bg-white border-2 border-black shadow-[3.5px_3.5px_0px_#000] p-4 rounded-xl hover:-translate-y-0.5 transition">
+          <span className="text-[10px] uppercase font-black text-neutral-700 block">Officers</span>
+          <span className="text-3xl font-black text-black mt-1 block">{loading ? '...' : roleCounts.grievance_officer || 0}</span>
+          <span className="text-[10px] font-bold text-neutral-800 mt-0.5 block">Ethics Directorate</span>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl">
-          <span className="text-[10px] uppercase font-bold text-slate-400 block">Canteen POS</span>
-          <span className="text-2xl font-black text-orange-400 mt-1 block">{loading ? '...' : roleCounts.canteen_operator || 0}</span>
-          <span className="text-[10px] text-slate-400 mt-0.5 block">Cafeteria Cashiers</span>
+        <div className="bg-white border-2 border-black shadow-[3.5px_3.5px_0px_#000] p-4 rounded-xl hover:-translate-y-0.5 transition">
+          <span className="text-[10px] uppercase font-black text-neutral-700 block">Canteen POS</span>
+          <span className="text-3xl font-black text-black mt-1 block">{loading ? '...' : roleCounts.canteen_operator || 0}</span>
+          <span className="text-[10px] font-bold text-neutral-800 mt-0.5 block">Cashiers</span>
         </div>
       </div>
 
       {/* Search and Role Filter Tabs */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div className="flex items-center space-x-2 flex-1 min-w-[260px]">
-          <Search className="w-4 h-4 text-slate-400" />
+      <div className="bg-white p-4 rounded-2xl border-[2.5px] border-black shadow-[4px_4px_0px_#000] flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div className="flex items-center space-x-2 flex-1 min-w-[260px] bg-[#FAF7EE] border-2 border-black rounded-xl px-3 py-2 shadow-[2px_2px_0px_#000]">
+          <Search className="w-4 h-4 text-black shrink-0" />
           <input
             type="text"
             placeholder="Search by name, institutional email, roll number, or department..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+            className="w-full bg-transparent text-xs font-bold text-black placeholder-neutral-500 focus:outline-none"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setSelectedRoleFilter('all')}
-            className={`px-3 py-1 rounded-xl text-xs font-semibold transition ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-black transition border-2 border-black shadow-[2px_2px_0px_#000] ${
               selectedRoleFilter === 'all'
-                ? 'bg-blue-600 text-white'
-                : 'bg-slate-900 text-slate-400 hover:text-white'
+                ? 'bg-[#FFE600] text-black'
+                : 'bg-white text-black hover:bg-neutral-100'
             }`}
           >
             All Roles
@@ -286,10 +286,10 @@ export default function PeopleDirectoryPage() {
             <button
               key={r.id}
               onClick={() => setSelectedRoleFilter(r.id)}
-              className={`px-3 py-1 rounded-xl text-xs font-semibold transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-black transition border-2 border-black shadow-[2px_2px_0px_#000] ${
                 selectedRoleFilter === r.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-900 text-slate-400 hover:text-white'
+                  ? 'bg-[#FFE600] text-black'
+                  : 'bg-white text-black hover:bg-neutral-100'
               }`}
             >
               {r.label}
@@ -301,12 +301,12 @@ export default function PeopleDirectoryPage() {
       {/* People Directory Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
-          <div className="col-span-full p-12 text-center text-slate-400">Loading database records...</div>
+          <div className="col-span-full p-12 text-center text-black font-black">Loading database records...</div>
         ) : filteredPeople.length === 0 ? (
-          <div className="col-span-full p-12 glass-card rounded-2xl text-center text-slate-400">
-            <Users className="w-10 h-10 mx-auto text-slate-600 mb-2" />
-            <p className="text-sm font-semibold text-white">No people found matching query.</p>
-            <p className="text-xs text-slate-500 mt-1">Click &quot;+ Add New Person to Database&quot; to insert a new member.</p>
+          <div className="col-span-full p-12 bg-white rounded-2xl text-center text-black border-[3px] border-black shadow-[5px_5px_0px_#000]">
+            <Users className="w-12 h-12 mx-auto text-black mb-2" />
+            <p className="text-base font-black text-black">No people found matching query.</p>
+            <p className="text-xs font-semibold text-neutral-700 mt-1">Click &quot;+ Add New Person to Database&quot; to insert a new member.</p>
           </div>
         ) : (
           filteredPeople.map((person) => {
@@ -317,10 +317,10 @@ export default function PeopleDirectoryPage() {
             return (
               <div
                 key={person.id}
-                className="glass-card glass-card-hover p-5 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-4"
+                className="bg-white p-5 rounded-2xl border-[2.5px] border-black shadow-[4px_4px_0px_#000] flex flex-col justify-between space-y-4 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#000] transition"
               >
                 <div className="flex items-start space-x-3">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-800 overflow-hidden shrink-0 border border-slate-700 flex items-center justify-center font-bold text-sm text-blue-400">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF7EE] overflow-hidden shrink-0 border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center font-black text-base text-black">
                     {person.avatarUrl ? (
                       <img src={person.avatarUrl} alt={person.fullName} className="w-full h-full object-cover" />
                     ) : (
@@ -330,64 +330,64 @@ export default function PeopleDirectoryPage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1">
-                      <h3 className="font-bold text-sm text-white truncate">{person.fullName}</h3>
+                      <h3 className="font-black text-base text-black truncate">{person.fullName}</h3>
                       <button
                         onClick={() => handleDeletePerson(person.id, person.fullName)}
                         title="Remove from database"
-                        className="text-slate-500 hover:text-rose-400 p-1 shrink-0 transition"
+                        className="text-black hover:bg-[#FB7185] p-1 shrink-0 rounded border border-black shadow-[1px_1px_0px_#000] transition"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
 
-                    <span className={`inline-flex items-center space-x-1 text-[10px] px-2 py-0.5 rounded-full border ${roleConf.bg} ${roleConf.color} font-semibold mt-0.5`}>
-                      <Icon className="w-3 h-3" />
+                    <span className="inline-flex items-center space-x-1 text-[10px] px-2 py-0.5 rounded border border-black bg-[#FAF7EE] text-black font-black shadow-[1px_1px_0px_#000] mt-1">
+                      <Icon className="w-3 h-3 text-black" />
                       <span>{roleConf.label}</span>
                     </span>
                   </div>
                 </div>
 
-                <div className="space-y-1.5 text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+                <div className="space-y-1.5 text-xs text-neutral-800 pt-2 border-t-2 border-black font-semibold">
                   <p className="flex items-center space-x-1.5 truncate">
-                    <Mail className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <Mail className="w-3.5 h-3.5 text-black shrink-0" />
                     <span className="truncate">{person.email}</span>
                   </p>
 
                   {person.rollNumber && (
-                    <p className="flex items-center space-x-1.5 text-slate-300">
-                      <GraduationCap className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                    <p className="flex items-center space-x-1.5 text-black">
+                      <GraduationCap className="w-3.5 h-3.5 text-black shrink-0" />
                       <span>Roll Number: <strong>{person.rollNumber}</strong></span>
                     </p>
                   )}
 
                   {person.department && (
                     <p className="flex items-center space-x-1.5 truncate">
-                      <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                      <Building2 className="w-3.5 h-3.5 text-black shrink-0" />
                       <span className="truncate">{person.department}</span>
                     </p>
                   )}
 
                   {person.clinicCabin && (
-                    <p className="flex items-center space-x-1.5 text-emerald-400 truncate">
-                      <MapPin className="w-3.5 h-3.5 shrink-0" />
+                    <p className="flex items-center space-x-1.5 text-black truncate">
+                      <MapPin className="w-3.5 h-3.5 shrink-0 text-black" />
                       <span className="truncate">{person.clinicCabin}</span>
                     </p>
                   )}
 
                   {docInfo && (
-                    <p className="text-[11px] text-emerald-300 font-medium">
+                    <p className="text-[11px] text-black font-bold bg-[#A3E635] p-1.5 rounded border border-black shadow-[1px_1px_0px_#000]">
                       Specialist: {docInfo.specialization} ({docInfo.consultationHours})
                     </p>
                   )}
                 </div>
 
-                <div className="pt-2 border-t border-slate-800/80">
+                <div className="pt-2 border-t-2 border-black">
                   <button
                     onClick={() => handleSwitchToPerson(person.id)}
-                    className="w-full py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 hover:text-white transition flex items-center justify-center space-x-1.5"
+                    className="w-full py-2 px-3 rounded-xl bg-[#FFE600] hover:bg-yellow-300 text-xs font-black text-black border-2 border-black shadow-[2px_2px_0px_#000] transition flex items-center justify-center space-x-1.5"
                   >
                     <span>Test As This Persona</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 text-black" />
                   </button>
                 </div>
               </div>
@@ -398,63 +398,63 @@ export default function PeopleDirectoryPage() {
 
       {/* Add New Person Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
-          <div className="w-full max-w-xl glass-card rounded-3xl p-6 sm:p-8 border border-slate-700 space-y-6 my-8 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 overflow-y-auto">
+          <div className="w-full max-w-xl bg-white rounded-3xl p-6 sm:p-8 border-[3.5px] border-black shadow-[10px_10px_0px_#000] space-y-6 my-8 max-h-[90vh] overflow-y-auto text-black">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black">
               <div>
-                <h3 className="font-bold text-lg text-white flex items-center space-x-2">
-                  <UserPlus className="w-5 h-5 text-blue-400" />
+                <h3 className="font-black text-xl text-black flex items-center space-x-2">
+                  <UserPlus className="w-5 h-5 text-black" />
                   <span>Add New Person to Database</span>
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs font-semibold text-neutral-700">
                   Instantly creates member profile, registers doctor availability, or initializes student civic wallet.
                 </p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
-                className="text-slate-400 hover:text-white p-1"
+                className="text-black bg-white hover:bg-[#FB7185] border-2 border-black p-1.5 rounded-lg shadow-[1.5px_1.5px_0px_#000] font-black"
               >
                 ✕
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-400">
+              <div className="p-3 rounded-xl bg-[#FB7185] border-2 border-black text-xs font-black text-black shadow-[2px_2px_0px_#000]">
                 {formError}
               </div>
             )}
 
             <form onSubmit={handleAddPerson} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Full Legal Name</label>
+                <label className="block text-xs font-black text-black mb-1">Full Legal Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Dr. Aryan Saxena or Neha Gupta"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4px_4px_0px_#000] outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Institutional Email Address</label>
+                <label className="block text-xs font-black text-black mb-1">Institutional Email Address</label>
                 <input
                   type="email"
                   required
                   placeholder="e.g. aryan.saxena@campus.edu"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4px_4px_0px_#000] outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Campus Role</label>
+                <label className="block text-xs font-black text-black mb-1">Campus Role</label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value as UserRole)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4px_4px_0px_#000] outline-none"
                 >
                   {ROLES.map((r) => (
                     <option key={r.id} value={r.id}>
@@ -466,55 +466,55 @@ export default function PeopleDirectoryPage() {
 
               {/* Dynamic Role Fields */}
               {role === 'student' && (
-                <div className="grid grid-cols-2 gap-3 p-3 rounded-2xl bg-blue-950/20 border border-blue-900/40">
+                <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-[#FAF7EE] border-2 border-black shadow-[3px_3px_0px_#000]">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Roll / Enrollment ID</label>
+                    <label className="block text-xs font-black text-black mb-1">Roll / Enrollment ID</label>
                     <input
                       type="text"
                       placeholder="CS2024-049"
                       value={rollNumber}
                       onChange={(e) => setRollNumber(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs uppercase"
+                      className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold uppercase shadow-[1.5px_1.5px_0px_#000]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">Department</label>
+                    <label className="block text-xs font-black text-black mb-1">Department</label>
                     <input
                       type="text"
                       placeholder="Computer Science"
                       value={department}
                       onChange={(e) => setDepartment(e.target.value)}
-                      className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                      className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                     />
                   </div>
-                  <p className="col-span-2 text-[10px] text-blue-400">
+                  <p className="col-span-2 text-[11px] font-black text-black bg-[#FFE600] p-1.5 rounded border border-black">
                     💡 Enrolled students automatically receive a Civic Wallet with 25 welcome points!
                   </p>
                 </div>
               )}
 
               {role === 'doctor' && (
-                <div className="space-y-3 p-3 rounded-2xl bg-emerald-950/20 border border-emerald-900/40">
+                <div className="space-y-3 p-4 rounded-2xl bg-[#FAF7EE] border-2 border-black shadow-[3px_3px_0px_#000]">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Medical Specialization</label>
+                      <label className="block text-xs font-black text-black mb-1">Medical Specialization</label>
                       <input
                         type="text"
                         placeholder="e.g. Dermatology & Allergy Care"
                         value={specialization}
                         onChange={(e) => setSpecialization(e.target.value)}
-                        className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                        className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Clinic Cabin / Location</label>
+                      <label className="block text-xs font-black text-black mb-1">Clinic Cabin / Location</label>
                       <input
                         type="text"
                         placeholder="Cabin 108, Campus Health Center"
                         value={clinicCabin}
                         onChange={(e) => setClinicCabin(e.target.value)}
-                        className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                        className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                         required
                       />
                     </div>
@@ -522,40 +522,40 @@ export default function PeopleDirectoryPage() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Qualifications</label>
+                      <label className="block text-xs font-black text-black mb-1">Qualifications</label>
                       <input
                         type="text"
                         placeholder="MBBS, MD"
                         value={qualification}
                         onChange={(e) => setQualification(e.target.value)}
-                        className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                        className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Consultation Hours</label>
+                      <label className="block text-xs font-black text-black mb-1">Consultation Hours</label>
                       <input
                         type="text"
                         placeholder="10:00 AM - 02:00 PM"
                         value={consultationHours}
                         onChange={(e) => setConsultationHours(e.target.value)}
-                        className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                        className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                       />
                     </div>
                   </div>
 
-                  <p className="text-[10px] text-emerald-400">
+                  <p className="text-[11px] font-black text-black bg-[#A3E635] p-1.5 rounded border border-black">
                     💡 This doctor will immediately appear in the Doctor Appointment Booking Directory!
                   </p>
                 </div>
               )}
 
               {role === 'department_staff' && (
-                <div className="p-3 rounded-2xl bg-amber-950/20 border border-amber-900/40">
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Facilities Department</label>
+                <div className="p-4 rounded-2xl bg-[#FAF7EE] border-2 border-black shadow-[3px_3px_0px_#000]">
+                  <label className="block text-xs font-black text-black mb-1">Facilities Department</label>
                   <select
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                    className="w-full px-3 py-2 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                   >
                     <option value="Electrical & Power Facilities">Electrical & Power Facilities</option>
                     <option value="IT Network & Hostel Wi-Fi">IT Network & Hostel Wi-Fi</option>
@@ -567,41 +567,41 @@ export default function PeopleDirectoryPage() {
               )}
 
               {role === 'canteen_operator' && (
-                <div className="p-3 rounded-2xl bg-orange-950/20 border border-orange-900/40">
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Assigned Cafeteria Station</label>
+                <div className="p-4 rounded-2xl bg-[#FAF7EE] border-2 border-black shadow-[3px_3px_0px_#000]">
+                  <label className="block text-xs font-black text-black mb-1">Assigned Cafeteria Station</label>
                   <input
                     type="text"
                     placeholder="Central Food Court Counter 1"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs"
+                    className="w-full px-3 py-1.5 rounded-lg bg-white border-2 border-black text-black text-xs font-bold shadow-[1.5px_1.5px_0px_#000]"
                   />
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Avatar Photo URL (Optional)</label>
+                <label className="block text-xs font-black text-black mb-1">Avatar Photo URL (Optional)</label>
                 <input
                   type="url"
                   placeholder="https://images.unsplash.com/... or leave empty for auto-generated avatar"
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
+                  className="w-full px-3 py-2 rounded-xl bg-white border-2 border-black text-black text-xs font-bold shadow-[2.5px_2.5px_0px_#000] focus:shadow-[4px_4px_0px_#000] outline-none"
                 />
               </div>
 
-              <div className="flex items-center space-x-2 pt-3 border-t border-slate-800">
+              <div className="flex items-center space-x-2 pt-3 border-t-2 border-black">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300"
+                  className="flex-1 py-2.5 rounded-xl bg-white border-2 border-black text-xs font-black text-black shadow-[2px_2px_0px_#000] hover:bg-neutral-100"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting || !fullName || !email}
-                  className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 disabled:bg-slate-800"
+                  className="flex-1 py-2.5 rounded-xl bg-[#FFE600] hover:bg-yellow-300 text-xs font-black text-black border-2 border-black shadow-[3px_3px_0px_#000] disabled:bg-neutral-200"
                 >
                   {isSubmitting ? 'Saving to Database...' : 'Save Person to Database'}
                 </button>
@@ -613,3 +613,4 @@ export default function PeopleDirectoryPage() {
     </div>
   );
 }
+
