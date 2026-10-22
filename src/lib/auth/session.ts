@@ -5,6 +5,53 @@ import { localDb } from '@/lib/db/local-store';
 export const SESSION_COOKIE_NAME = 'civicspulse_user_id';
 export const DEFAULT_USER_ID = 'user-student-1'; // Default demo user
 
+export const ROLE_DASHBOARD_ROUTES: Record<UserRole, string> = {
+  student: '/',
+  doctor: '/doctor/dashboard',
+  department_staff: '/department-portal',
+  grievance_officer: '/grievance-portal',
+  administrator: '/admin',
+  canteen_operator: '/canteen-pos',
+};
+
+export function getDashboardRouteForRole(role: UserRole): string {
+  return ROLE_DASHBOARD_ROUTES[role] || '/';
+}
+
+/**
+ * Returns the authenticated user from the verified session cookie,
+ * looking up the record in the trusted database.
+ * Returns null if not logged in.
+ */
+export async function getAuthenticatedUser(): Promise<UserProfile | null> {
+  const cookieStore = await cookies();
+  const userId = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  if (!userId) return null;
+
+  const user = await localDb.getUserById(userId);
+  return user || null;
+}
+
+/**
+ * Strict authentication guard: throws 401 Unauthorized if no active session.
+ */
+export async function requireAuthenticatedUser(): Promise<UserProfile> {
+  const user = await getAuthenticatedUser();
+  if (!user) {
+    throw new Error('Unauthorized: Valid campus session required. Please sign in.');
+  }
+  return user;
+}
+
+/**
+ * Resolves the user's authoritative role directly from the database record.
+ * Never trust roles sent from client payloads or query parameters.
+ */
+export async function verifyRoleFromDatabase(userId: string): Promise<UserRole | null> {
+  const user = await localDb.getUserById(userId);
+  return user ? user.role : null;
+}
+
 export async function getCurrentUser(): Promise<UserProfile> {
   const cookieStore = await cookies();
   const userIdCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;

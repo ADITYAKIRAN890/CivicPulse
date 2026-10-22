@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { localDb } from '@/lib/db/local-store';
+import { getCurrentUser, enforceRole } from '@/lib/auth/session';
 import { UserRole } from '@/types';
 
 export async function GET() {
@@ -31,6 +32,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const currentUser = await getCurrentUser();
+    enforceRole(currentUser, ['administrator']);
+
     const body = await req.json();
     const {
       fullName,

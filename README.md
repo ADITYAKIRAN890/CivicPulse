@@ -236,5 +236,70 @@ npm run start
 
 ---
 
+## 📧 Real-Time Complaint Email Notifications via Resend
+
+CivicsPulse automatically dispatches professional, Neo-Brutalist HTML email notifications whenever a student submits an infrastructure complaint on campus.
+
+### 1. Create a Free Resend Account & API Key
+1. Sign up for a free account at [https://resend.com](https://resend.com) (no credit card required).
+2. Navigate to **API Keys** &rarr; **Create API Key**.
+3. Name it `CivicsPulse-Dev`, select **Full Access**, and copy the token starting with `re_...`.
+
+### 2. Initial Recipient & Sandbox Limitation
+- **Initial Permitted Recipient**: In Resend's free tier without a custom verified domain, Resend **strictly permits sending emails to your own registered/verified Resend account email address** (e.g., your personal Gmail).
+- Set `COMPLAINT_NOTIFICATION_EMAIL` to this exact verified email.
+
+### 3. Configure Sender Address
+- For zero-cost local development without purchasing a domain, use Resend's pre-verified shared sender:
+  ```env
+  EMAIL_FROM=CivicsPulse Campus <onboarding@resend.dev>
+  ```
+- **Custom Institutional Domains**: Once you verify a collegiate domain in Resend (via DKIM/SPF DNS records), you can update `EMAIL_FROM` to e.g. `alerts@yourcampus.edu` and deliver alerts to any arbitrary department inbox.
+
+### 4. Required Environment Variables
+Create `.env.local` in the project root (never committed to git):
+```bash
+# Server-side Resend API Key (starts with re_...)
+RESEND_API_KEY=re_your_actual_key_here
+
+# Target inbox for campus complaint notifications (your verified Resend Gmail)
+COMPLAINT_NOTIFICATION_EMAIL=your-verified-email@gmail.com
+
+# Verified sender
+EMAIL_FROM=CivicsPulse Campus <onboarding@resend.dev>
+
+# Application Base URL (for dashboard triage links in emails)
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### 5. Restarting the Development Server
+Next.js loads `.env.local` at process initialization. After creating or modifying `.env.local`, restart your server:
+```bash
+# Stop the running server (Ctrl+C), then restart:
+npm run dev
+```
+
+### 6. Testing the Email Pipeline
+- **Method A (Interactive Console in Admin Hub)**:
+  1. Sign in as **Dr. Meenakshi Sundaram (Campus Dean)** at `/login`.
+  2. Open `/admin`.
+  3. Scroll down to **Resend Email Notification Pipeline & Audit Trail**.
+  4. Click **"Send Test Resend Email"**.
+  5. The server calls `POST /api/email/test` and displays the live Resend Message ID and provider status.
+- **Method B (Real Complaint Submission)**:
+  1. Sign in as a student (e.g. **Aarav Sharma**) at `/login`.
+  2. Navigate to `/complaints` &rarr; click **"Report Civic Issue"**.
+  3. Submit a complaint (e.g. "Broken pipe in hostel").
+  4. The server validates and saves the complaint, assigns the department, and dispatches the email notification to `COMPLAINT_NOTIFICATION_EMAIL`.
+  5. Check your inbox and spam folder for the email with subject `[CivicsPulse Alert] HIGH: CMP-...`.
+
+### 7. Reliability, Idempotency & Failure Tolerance
+- **Strict Idempotency**: Each complaint has an immutable key (`complaint_email_${complaint.id}`). If an alert was already accepted or queued by Resend, subsequent retries return `alreadySent: true` without creating duplicate emails.
+- **Non-Blocking Persistence**: A failed email or missing API key **never deletes, cancels, or invalidates a saved complaint**. Complaints are safely persisted in the database regardless of email provider status.
+- **Safe Retries**: Failed dispatches can be re-triggered directly from the Admin Hub (`/admin`) or via `POST /api/email/notifications`.
+- **Status Truthfulness**: Messages accepted by Resend's API are accurately logged as `queued` (not prematurely marked as `delivered` until confirmed).
+
+---
+
 ## 📄 License & Budget Disclosure
 Total expenditure for this build: **₹0.00**. Created for collegiate smart-campus hackathons under the MIT License.

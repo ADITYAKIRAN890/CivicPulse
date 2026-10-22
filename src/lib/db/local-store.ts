@@ -16,6 +16,7 @@ import {
   CanteenCatalogItem,
   CanteenCoupon,
   InAppNotification,
+  ComplaintEmailNotification,
 } from '@/types';
 import {
   SEED_USERS,
@@ -43,6 +44,7 @@ interface DatabaseSchema {
   rewardLedger: RewardLedgerEntry[];
   coupons: CanteenCoupon[];
   notifications: InAppNotification[];
+  emailNotifications: ComplaintEmailNotification[];
 }
 
 // In-Memory Async Mutex for Atomic Race-Condition Protection
@@ -87,7 +89,9 @@ class LocalDatabase {
       if (fs.existsSync(this.dbPath)) {
         const fileContent = fs.readFileSync(this.dbPath, 'utf-8');
         if (fileContent && fileContent.trim().length > 2) {
-          return JSON.parse(fileContent) as DatabaseSchema;
+          const parsed = JSON.parse(fileContent) as DatabaseSchema;
+          parsed.emailNotifications = parsed.emailNotifications || [];
+          return parsed;
         }
       }
     } catch (err) {
@@ -106,6 +110,7 @@ class LocalDatabase {
       rewardLedger: [...SEED_REWARD_LEDGER],
       coupons: [...SEED_COUPONS],
       notifications: [...SEED_NOTIFICATIONS],
+      emailNotifications: [],
     };
 
     this.saveData(initialData);
@@ -133,6 +138,7 @@ class LocalDatabase {
       rewardLedger: JSON.parse(JSON.stringify(SEED_REWARD_LEDGER)),
       coupons: JSON.parse(JSON.stringify(SEED_COUPONS)),
       notifications: JSON.parse(JSON.stringify(SEED_NOTIFICATIONS)),
+      emailNotifications: [],
     };
     this.saveData(this.data);
   }
@@ -1232,11 +1238,11 @@ class LocalDatabase {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  async markNotificationRead(notificationId: string): Promise<void> {
+  async markNotificationRead(notificationId: string, userId?: string): Promise<void> {
     const release = await this.mutex.acquire();
     try {
       const n = this.data.notifications.find((item) => item.id === notificationId);
-      if (n) {
+      if (n && (!userId || n.userId === userId)) {
         n.read = true;
         this.saveData(this.data);
       }
@@ -1256,6 +1262,51 @@ class LocalDatabase {
       release();
     }
   }
+
+  // ================= COMPLAINT EMAIL NOTIFICATIONS =================
+  async getEmailNotifications(complaintId?: string): Promise<ComplaintEmailNotification[]> {
+    const list = this.data.emailNotifications || [];
+    if (complaintId) {
+      return list.filter((n) => n.complaintId === complaintId);
+    }
+    return [...list].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getEmailNotificationByIdempotencyKey(key: string): Promise<ComplaintEmailNotification | null> {
+    const list = this.data.emailNotifications || [];
+    return list.find((n) => n.idempotencyKey === key) || null;
+  }
+
+  async saveEmailNotification(notif: ComplaintEmailNotification): Promise<ComplaintEmailNotification> {
+    const release = await this.mutex.acquire();
+    try {
+      this.data.emailNotifications = this.data.emailNotifications || [];
+      const existingIndex = this.data.emailNotifications.findIndex((n) => n.idempotencyKey === notif.idempotencyKey);
+      if (existingIndex >= 0) {
+        this.data.emailNotifications[existingIndex] = { ...notif, updatedAt: new Date().toISOString() };
+      } else {
+        this.data.emailNotifications.push(notif);
+      }
+      this.saveData(this.data);
+      return notif;
+    } finally {
+      release();
+    }
+  }
+
+  async updateEmailNotification(id: string, updates: Partial<ComplaintEmailNotification>): Promise<ComplaintEmailNotification | null> {
+    const release = await this.mutex.acquire();
+    try {
+      this.data.emailNotifications = this.data.emailNotifications || [];
+      const notif = this.data.emailNotifications.find((n) => n.id === id);
+      if (!notif) return null;
+      Object.assign(notif, updates, { updatedAt: new Date().toISOString() });
+      this.saveData(this.data);
+      return notif;
+    } finally {
+      release();
+    }
+  }
 }
 
 // Global Singleton Instance
@@ -1263,7 +1314,7 @@ declare global {
   var __civicsPulseDb: LocalDatabase | undefined;
 }
 
-export const localDb = globalThis.__civicsPulseDb || new LocalDatabase();
-if (process.env.NODE_ENV !== 'production') {
-  globalThis.__civicsPulseDb = localDb;
-}
+export const localDb =
+  globalThis.__civicsPulseDb && typeof (globalThis.__civicsPulseDb as any).getEmailNotifications === 'function'
+    ? globalThis.__civicsPulseDb
+    : (globalThis.__civicsPulseDb = new LocalDatabase());

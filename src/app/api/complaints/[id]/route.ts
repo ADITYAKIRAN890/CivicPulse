@@ -40,6 +40,18 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
       return NextResponse.json({ success: false, error: 'Status is required' }, { status: 400 });
     }
 
+    const complaint = await localDb.getComplaintById(id);
+    if (!complaint) {
+      return NextResponse.json({ success: false, error: 'Complaint not found' }, { status: 404 });
+    }
+
+    if (user.role === 'student' && complaint.studentId !== user.id) {
+      return NextResponse.json(
+        { success: false, error: "Access forbidden: You cannot modify another student's complaint." },
+        { status: 403 }
+      );
+    }
+
     const result = await localDb.updateComplaintStatus({
       complaintId: id,
       actorId: user.id,

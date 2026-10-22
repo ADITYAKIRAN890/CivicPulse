@@ -6,6 +6,17 @@ interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
+async function checkAppointmentAccess(user: any, appointment: any): Promise<boolean> {
+  if (user.role === 'administrator') return true;
+  if (user.role === 'student' && appointment.studentId === user.id) return true;
+  if (user.role === 'doctor') {
+    const doctors = await localDb.getDoctors();
+    const myDoctor = doctors.find((d: any) => d.userId === user.id);
+    return Boolean(myDoctor && appointment.doctorId === myDoctor.id);
+  }
+  return false;
+}
+
 export async function GET(req: NextRequest, context: RouteContext) {
   try {
     const user = await getCurrentUser();
@@ -15,16 +26,9 @@ export async function GET(req: NextRequest, context: RouteContext) {
       return NextResponse.json({ success: false, error: 'Appointment not found' }, { status: 404 });
     }
 
-    // Role-based privacy enforcement
-    if (user.role === 'student' && appointment.studentId !== user.id) {
+    const hasAccess = await checkAppointmentAccess(user, appointment);
+    if (!hasAccess) {
       return NextResponse.json({ success: false, error: 'Access forbidden: unauthorized' }, { status: 403 });
-    }
-    if (user.role === 'doctor') {
-      const doctors = await localDb.getDoctors();
-      const myDoctor = doctors.find((d) => d.userId === user.id);
-      if (myDoctor && appointment.doctorId !== myDoctor.id) {
-        return NextResponse.json({ success: false, error: 'Access forbidden: unauthorized' }, { status: 403 });
-      }
     }
 
     return NextResponse.json({ success: true, appointment });

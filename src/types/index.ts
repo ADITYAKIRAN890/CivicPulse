@@ -240,3 +240,22 @@ export interface AIPriorityAnalysis {
   suggestedCategory: ComplaintCategory;
   humanReviewRequired: boolean;
 }
+
+export type EmailNotificationStatus = 'pending' | 'queued' | 'sent' | 'delivered' | 'failed';
+
+export interface ComplaintEmailNotification {
+  id: string;
+  complaintId: string;
+  complaintReference: string;
+  idempotencyKey: string;
+  recipientEmail: string;
+  senderEmail: string;
+  intendedDepartment: string;
+  status: EmailNotificationStatus;
+  resendId?: string;
+  attemptCount: number;
+  errorMessage?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+

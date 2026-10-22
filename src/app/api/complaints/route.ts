@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { localDb } from '@/lib/db/local-store';
 import { getCurrentUser } from '@/lib/auth/session';
 import { analyzePriorityAndClassification } from '@/lib/ai/intelligence';
+import { sendComplaintEmailNotification } from '@/lib/email/resend-service';
 
 export async function GET(req: NextRequest) {
   try {
@@ -75,7 +76,32 @@ export async function POST(req: NextRequest) {
       pointsAwardedResolution: false,
     });
 
-    return NextResponse.json({ success: true, complaint: newComplaint, aiAnalysis }, { status: 201 });
+    // Dispatch automated email notification to the designated department inbox via Resend
+    let emailNotificationResult = null;
+    try {
+      emailNotificationResult = await sendComplaintEmailNotification(newComplaint);
+    } catch (emailErr) {
+      // Failure to dispatch email must NEVER fail or invalidate a successfully saved complaint!
+      console.error('Complaint email notification dispatch caught error:', emailErr);
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        complaint: newComplaint,
+        aiAnalysis,
+        emailNotification: emailNotificationResult
+          ? {
+              status: emailNotificationResult.status,
+              resendId: emailNotificationResult.resendId,
+              recipient: emailNotificationResult.recipient,
+              error: emailNotificationResult.error,
+              alreadySent: emailNotificationResult.alreadySent,
+            }
+          : null,
+      },
+      { status: 201 }
+    );
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Failed to create complaint';
     return NextResponse.json({ success: false, error: message }, { status: 400 });

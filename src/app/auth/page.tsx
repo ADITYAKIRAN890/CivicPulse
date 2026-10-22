@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   Sparkles,
   Mail,
@@ -170,7 +171,17 @@ export default function AuthPage() {
           </button>
         </form>
 
-        <div className="pt-4 border-t-2 border-black text-[11px] text-neutral-700 font-bold leading-relaxed flex items-start space-x-2">
+        <div className="pt-4 border-t-2 border-black flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-bold">
+          <span className="text-neutral-700">Already registered or campus staff?</span>
+          <Link
+            href="/login"
+            className="px-3.5 py-1.5 rounded-xl bg-[#38BDF8] border-2 border-black font-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#7DD3FC] transition"
+          >
+            Go to Unified Sign-In Portal →
+          </Link>
+        </div>
+
+        <div className="pt-2 text-[11px] text-neutral-700 font-bold leading-relaxed flex items-start space-x-2">
           <ShieldCheck className="w-4 h-4 text-black shrink-0 mt-0.5" />
           <span>
             Privileged roles (Doctor, Facilities Staff, Grievance Officer, Dean, Canteen POS) are managed by university administration and cannot be self-assigned.

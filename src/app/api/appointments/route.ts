@@ -32,10 +32,18 @@ export async function GET(req: NextRequest) {
       const myDoctorProfile = doctors.find((d) => d.userId === user.id);
       if (myDoctorProfile) {
         filters.doctorId = myDoctorProfile.id;
+      } else {
+        return NextResponse.json({ success: true, appointments: [] });
       }
     } else if (user.role === 'administrator') {
       if (doctorId) filters.doctorId = doctorId;
       if (studentId) filters.studentId = studentId;
+    } else {
+      // Unrelated roles (canteen_operator, department_staff, grievance_officer) have no access to medical appointments
+      return NextResponse.json(
+        { success: false, error: 'Access forbidden: unauthorized role for clinical appointments.' },
+        { status: 403 }
+      );
     }
 
     if (date) filters.date = date;

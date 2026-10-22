@@ -13,11 +13,13 @@ import {
   FileCheck,
   Sparkles,
   ArrowRight,
+  Mail,
 } from 'lucide-react';
-import { Complaint, ComplaintStatus, UserProfile } from '@/types';
+import { Complaint, ComplaintStatus, UserProfile, ComplaintEmailNotification } from '@/types';
 
 export default function DepartmentPortalPage() {
   const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const [emailNotifications, setEmailNotifications] = useState<ComplaintEmailNotification[]>([]);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,14 +31,20 @@ export default function DepartmentPortalPage() {
 
   const loadData = async () => {
     try {
-      const [cmpRes, sessionRes] = await Promise.all([
+      const [cmpRes, sessionRes, emailNotifRes] = await Promise.all([
         fetch('/api/complaints'),
         fetch('/api/auth/session'),
+        fetch('/api/email/notifications'),
       ]);
-      const [cmpData, sessionData] = await Promise.all([cmpRes.json(), sessionRes.json()]);
+      const [cmpData, sessionData, emailNotifData] = await Promise.all([
+        cmpRes.json(),
+        sessionRes.json(),
+        emailNotifRes.json(),
+      ]);
 
       if (cmpData.success) setComplaints(cmpData.complaints || []);
       if (sessionData.success) setCurrentUser(sessionData.user);
+      if (emailNotifData.success) setEmailNotifications(emailNotifData.notifications || []);
     } catch (err) {
       console.error('Failed to load department portal:', err);
     } finally {
@@ -215,17 +223,39 @@ export default function DepartmentPortalPage() {
                     </span>
                   </div>
 
-                  <span
-                    className={`text-xs px-3 py-1 rounded-full font-black uppercase border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
-                      item.status === 'resolved'
-                        ? 'bg-[#A3E635] text-black'
-                        : item.status === 'in_progress'
-                        ? 'bg-[#38BDF8] text-black'
-                        : 'bg-[#FEF08A] text-black'
-                    }`}
-                  >
-                    {item.status.replace(/_/g, ' ')}
-                  </span>
+                  <div className="flex items-center space-x-2">
+                    {(() => {
+                      const notif = emailNotifications.find((n) => n.complaintId === item.id);
+                      if (!notif) return null;
+                      return (
+                        <span
+                          className={`text-[10px] px-2 py-0.5 rounded font-black border-2 border-black shadow-[1px_1px_0px_#000] flex items-center space-x-1 ${
+                            notif.status === 'queued'
+                              ? 'bg-[#38BDF8] text-black'
+                              : notif.status === 'sent' || notif.status === 'delivered'
+                              ? 'bg-[#A3E635] text-black'
+                              : 'bg-[#FB7185] text-black'
+                          }`}
+                          title={notif.resendId ? `Resend ID: ${notif.resendId}` : notif.errorMessage}
+                        >
+                          <Mail className="w-3 h-3 text-black" />
+                          <span className="capitalize">Email: {notif.status}</span>
+                        </span>
+                      );
+                    })()}
+
+                    <span
+                      className={`text-xs px-3 py-1 rounded-full font-black uppercase border-2 border-black shadow-[1.5px_1.5px_0px_#000] ${
+                        item.status === 'resolved'
+                          ? 'bg-[#A3E635] text-black'
+                          : item.status === 'in_progress'
+                          ? 'bg-[#38BDF8] text-black'
+                          : 'bg-[#FEF08A] text-black'
+                      }`}
+                    >
+                      {item.status.replace(/_/g, ' ')}
+                    </span>
+                  </div>
                 </div>
 
                 <div>

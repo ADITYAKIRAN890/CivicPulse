@@ -6,11 +6,13 @@ export async function GET() {
   try {
     const user = await getCurrentUser();
 
+    const couponFilter = ['canteen_operator', 'administrator'].includes(user.role) ? undefined : user.id;
+
     const [wallet, ledger, catalog, coupons] = await Promise.all([
       localDb.getWallet(user.id),
       localDb.getRewardLedger(user.id),
       localDb.getCanteenCatalog(),
-      localDb.getCoupons(user.role === 'student' ? user.id : undefined),
+      localDb.getCoupons(couponFilter),
     ]);
 
     return NextResponse.json({

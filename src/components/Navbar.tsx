@@ -19,6 +19,8 @@ import {
   ChevronDown,
   Sparkles,
   Users,
+  LogIn,
+  LogOut,
 } from 'lucide-react';
 import { UserProfile, UserRole, InAppNotification } from '@/types';
 
@@ -36,19 +38,21 @@ export default function Navbar({ initialUser }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
-  // Fetch current session & all users for persona switcher
+  // Fetch current session & all users
   useEffect(() => {
     async function loadSessionAndUsers() {
       try {
         const [sessionRes, usersRes] = await Promise.all([
-          fetch('/api/auth/session'),
-          fetch('/api/auth/users'),
+          fetch('/api/auth/session', { cache: 'no-store' }),
+          fetch('/api/auth/users', { cache: 'no-store' }),
         ]);
         const sessionData = await sessionRes.json();
         const usersData = await usersRes.json();
 
         if (sessionData.success && sessionData.user) {
           setCurrentUser(sessionData.user);
+        } else {
+          setCurrentUser(null);
         }
         if (usersData.success && usersData.users) {
           setAllUsers(usersData.users);
@@ -58,11 +62,17 @@ export default function Navbar({ initialUser }: NavbarProps) {
       }
     }
     loadSessionAndUsers();
-  }, []);
+    window.addEventListener('civicspulse-auth-changed', loadSessionAndUsers);
+    return () => window.removeEventListener('civicspulse-auth-changed', loadSessionAndUsers);
+  }, [pathname]);
 
   // Fetch notifications
   useEffect(() => {
     async function loadNotifications() {
+      if (!currentUser?.id) {
+        setNotifications([]);
+        return;
+      }
       try {
         const res = await fetch('/api/notifications');
         const data = await res.json();
@@ -74,8 +84,10 @@ export default function Navbar({ initialUser }: NavbarProps) {
       }
     }
     loadNotifications();
-    const interval = setInterval(loadNotifications, 10000); // live polling
-    return () => clearInterval(interval);
+    if (currentUser?.id) {
+      const interval = setInterval(loadNotifications, 10000); // live polling
+      return () => clearInterval(interval);
+    }
   }, [currentUser?.id]);
 
   const unreadNotifs = notifications.filter((n) => !n.read);
@@ -96,6 +108,21 @@ export default function Navbar({ initialUser }: NavbarProps) {
     } catch (err) {
       console.error('Failed to switch persona:', err);
     }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Sign out error:', err);
+    }
+    document.cookie = 'civicspulse_user_id=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0;';
+    setCurrentUser(null);
+    setNotifications([]);
+    setShowPersonaMenu(false);
+    setMobileMenuOpen(false);
+    window.dispatchEvent(new Event('civicspulse-auth-changed'));
+    window.location.href = '/login';
   };
 
   const handleResetData = async () => {
@@ -147,13 +174,13 @@ export default function Navbar({ initialUser }: NavbarProps) {
     { label: 'People Database', shortLabel: 'People', href: '/people', icon: Users },
   ];
 
-  // Role portal dynamic shortcuts
+  // Role portal dynamic shortcuts - clean 1-link workspace per role
   const portalLinks = [
-    { label: 'Doctor Dashboard', shortLabel: 'Doctor Hub', href: '/doctor/dashboard', icon: Stethoscope, roles: ['doctor', 'administrator'] },
-    { label: 'Facilities Ops', shortLabel: 'Facilities', href: '/department-portal', icon: Building2, roles: ['department_staff', 'administrator'] },
-    { label: 'Grievances', shortLabel: 'Grievances', href: '/grievance-portal', icon: Shield, roles: ['grievance_officer', 'administrator', 'student'] },
-    { label: 'Canteen POS', shortLabel: 'Canteen', href: '/canteen-pos', icon: Coffee, roles: ['canteen_operator', 'administrator'] },
-    { label: 'Admin Hub', shortLabel: 'Admin', href: '/admin', icon: UserCheck, roles: ['administrator'] },
+    { label: 'Doctor Dashboard', shortLabel: 'Doctor Hub', href: '/doctor/dashboard', icon: Stethoscope, roles: ['doctor'] },
+    { label: 'Facilities Ops', shortLabel: 'Facilities', href: '/department-portal', icon: Building2, roles: ['department_staff'] },
+    { label: 'Grievance Archive', shortLabel: 'Grievances', href: '/grievance-portal', icon: Shield, roles: ['grievance_officer'] },
+    { label: 'Canteen POS', shortLabel: 'Canteen', href: '/canteen-pos', icon: Coffee, roles: ['canteen_operator'] },
+    { label: 'Admin Control', shortLabel: 'Admin Hub', href: '/admin', icon: UserCheck, roles: ['administrator'] },
   ];
 
   const visiblePortals = portalLinks.filter((p) => currentUser && p.roles.includes(currentUser.role));
@@ -227,91 +254,103 @@ export default function Navbar({ initialUser }: NavbarProps) {
 
           {/* Right Header Actions */}
           <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
-            {/* Notification Bell */}
-            <div className="relative shrink-0">
-              <button
-                onClick={() => setShowNotifMenu(!showNotifMenu)}
-                className="relative p-2 rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] transition"
-                title="Notifications"
-              >
-                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
-                {unreadNotifs.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FB7185] border-2 border-black text-black text-[11px] font-black flex items-center justify-center shadow-[1px_1px_0px_#000]">
-                    {unreadNotifs.length}
-                  </span>
-                )}
-              </button>
-
-              {/* Notification Popover */}
-              {showNotifMenu && (
-                <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl p-4 shadow-[6px_6px_0px_#000] z-50 border-[3px] border-black">
-                  <div className="flex items-center justify-between pb-3 border-b-2 border-black">
-                    <h3 className="font-black text-sm text-black flex items-center space-x-2">
-                      <Bell className="w-4 h-4 text-black" />
-                      <span>In-App Notifications</span>
-                    </h3>
+            {currentUser ? (
+              <>
+                {/* Notification Bell */}
+                <div className="relative shrink-0">
+                  <button
+                    onClick={() => setShowNotifMenu(!showNotifMenu)}
+                    className="relative p-2 rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] transition"
+                    title="Notifications"
+                  >
+                    <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                     {unreadNotifs.length > 0 && (
-                      <button
-                        onClick={handleMarkAllRead}
-                        className="text-xs font-black bg-[#A3E635] text-black border-2 border-black px-2 py-0.5 rounded shadow-[1.5px_1.5px_0px_#000] hover:bg-lime-300"
-                      >
-                        Mark all read
-                      </button>
+                      <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FB7185] border-2 border-black text-black text-[11px] font-black flex items-center justify-center shadow-[1px_1px_0px_#000]">
+                        {unreadNotifs.length}
+                      </span>
                     )}
-                  </div>
-                  <div className="max-h-72 overflow-y-auto divide-y-2 divide-neutral-200 mt-2">
-                    {notifications.length === 0 ? (
-                      <p className="text-xs font-bold text-neutral-500 text-center py-6">No notifications yet.</p>
-                    ) : (
-                      notifications.slice(0, 8).map((notif) => (
-                        <div
-                          key={notif.id}
-                          className={`py-2.5 px-2 rounded-lg transition ${
-                            !notif.read ? 'bg-[#FFF066]/30' : ''
-                          }`}
-                        >
-                          <div className="flex items-start justify-between">
-                            <h4 className="text-xs font-black text-black">{notif.title}</h4>
-                            <span className="text-[10px] font-bold text-neutral-600">
-                              {new Date(notif.createdAt).toLocaleDateString([], {
-                                month: 'short',
-                                day: 'numeric',
-                              })}
-                            </span>
-                          </div>
-                          <p className="text-xs font-semibold text-neutral-800 mt-0.5 leading-snug">{notif.message}</p>
-                          {notif.link && (
-                            <Link
-                              href={notif.link}
-                              onClick={() => setShowNotifMenu(false)}
-                              className="inline-block mt-1 text-[11px] font-extrabold text-black underline decoration-2 hover:bg-[#FFE600]"
-                            >
-                              View details →
-                            </Link>
-                          )}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+                  </button>
 
-            {/* Persona Switcher Trigger Button */}
-            <button
-              onClick={() => setShowPersonaMenu(!showPersonaMenu)}
-              className="flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-2.5 py-1.5 rounded-xl bg-white border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] transition shrink-0"
-              title="Switch user role / profile"
-            >
-              <div className="w-7 h-7 rounded-lg bg-[#FFE600] border-2 border-black flex items-center justify-center font-black text-xs text-black shrink-0 shadow-[1px_1px_0px_#000]">
-                {currentUser?.fullName.charAt(0) || 'A'}
-              </div>
-              <div className="text-left hidden sm:flex flex-col justify-center min-w-0 max-w-[95px] xl:max-w-[125px]">
-                <p className="text-xs font-black text-black leading-tight truncate whitespace-nowrap">{currentUser?.fullName}</p>
-                <p className="text-[10px] font-bold text-neutral-600 leading-tight truncate whitespace-nowrap">{activeRoleConfig.label}</p>
-              </div>
-              <ChevronDown className="w-3.5 h-3.5 text-black shrink-0" />
-            </button>
+                  {/* Notification Popover */}
+                  {showNotifMenu && (
+                    <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl p-4 shadow-[6px_6px_0px_#000] z-50 border-[3px] border-black">
+                      <div className="flex items-center justify-between pb-3 border-b-2 border-black">
+                        <h3 className="font-black text-sm text-black flex items-center space-x-2">
+                          <Bell className="w-4 h-4 text-black" />
+                          <span>In-App Notifications</span>
+                        </h3>
+                        {unreadNotifs.length > 0 && (
+                          <button
+                            onClick={handleMarkAllRead}
+                            className="text-xs font-black bg-[#A3E635] text-black border-2 border-black px-2 py-0.5 rounded shadow-[1.5px_1.5px_0px_#000] hover:bg-lime-300"
+                          >
+                            Mark all read
+                          </button>
+                        )}
+                      </div>
+                      <div className="max-h-72 overflow-y-auto divide-y-2 divide-neutral-200 mt-2">
+                        {notifications.length === 0 ? (
+                          <p className="text-xs font-bold text-neutral-500 text-center py-6">No notifications yet.</p>
+                        ) : (
+                          notifications.slice(0, 8).map((notif) => (
+                            <div
+                              key={notif.id}
+                              className={`py-2.5 px-2 rounded-lg transition ${
+                                !notif.read ? 'bg-[#FFF066]/30' : ''
+                              }`}
+                            >
+                              <div className="flex items-start justify-between">
+                                <h4 className="text-xs font-black text-black">{notif.title}</h4>
+                                <span className="text-[10px] font-bold text-neutral-600">
+                                  {new Date(notif.createdAt).toLocaleDateString([], {
+                                    month: 'short',
+                                    day: 'numeric',
+                                  })}
+                                </span>
+                              </div>
+                              <p className="text-xs font-semibold text-neutral-800 mt-0.5 leading-snug">{notif.message}</p>
+                              {notif.link && (
+                                <Link
+                                  href={notif.link}
+                                  onClick={() => setShowNotifMenu(false)}
+                                  className="inline-block mt-1 text-[11px] font-extrabold text-black underline decoration-2 hover:bg-[#FFE600]"
+                                >
+                                  View details →
+                                </Link>
+                              )}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Persona Account Trigger Button */}
+                <button
+                  onClick={() => setShowPersonaMenu(!showPersonaMenu)}
+                  className="flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-2.5 py-1.5 rounded-xl bg-white border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] transition shrink-0"
+                  title={`Signed in as ${currentUser.fullName} (${activeRoleConfig.label})`}
+                >
+                  <div className="w-7 h-7 rounded-lg bg-[#FFE600] border-2 border-black flex items-center justify-center font-black text-xs text-black shrink-0 shadow-[1px_1px_0px_#000]">
+                    {currentUser.fullName.charAt(0)}
+                  </div>
+                  <div className="text-left flex flex-col justify-center min-w-0 max-w-[110px] sm:max-w-[160px] md:max-w-[220px]">
+                    <p className="text-xs font-black text-black leading-tight truncate">{currentUser.fullName}</p>
+                    <p className="text-[10px] font-bold text-neutral-600 leading-tight truncate">{activeRoleConfig.label}</p>
+                  </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-black shrink-0" />
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-[#FFE600] hover:bg-[#FFF066] border-2 border-black text-black font-black text-xs sm:text-sm shadow-[2px_2px_0px_#000] hover:-translate-y-0.5 transition shrink-0"
+              >
+                <LogIn className="w-4 h-4 text-black" />
+                <span>Sign In</span>
+              </Link>
+            )}
 
             {/* Mobile Menu Toggle */}
             <button
@@ -325,19 +364,27 @@ export default function Navbar({ initialUser }: NavbarProps) {
         </div>
       </div>
 
-      {/* Persona Switcher Dropdown Modal */}
-      {showPersonaMenu && (
-        <div className="fixed inset-0 z-50 flex items-start justify-end sm:p-4 bg-black/50">
-          <div className="w-full sm:w-[420px] max-w-full bg-white rounded-2xl p-5 shadow-[8px_8px_0px_#000] border-[3.5px] border-black mt-12 sm:mr-4 max-h-[85vh] overflow-y-auto">
+      {/* Authenticated User Account Card Modal */}
+      {showPersonaMenu && currentUser && (
+        <div
+          className="fixed inset-0 z-50 flex items-start justify-end sm:p-4 bg-black/50"
+          onClick={() => setShowPersonaMenu(false)}
+        >
+          <div
+            className="w-full sm:w-[380px] max-w-full bg-white rounded-2xl p-5 shadow-[8px_8px_0px_#000] border-[3.5px] border-black mt-12 sm:mr-4 max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between pb-3 border-b-2 border-black">
-              <div>
-                <h3 className="font-black text-base text-black flex items-center space-x-2">
-                  <UserCheck className="w-5 h-5 text-black" />
-                  <span>Demo Persona Switcher</span>
-                </h3>
-                <p className="text-xs font-semibold text-neutral-700">
-                  Instantly switch roles to test access control and workflows.
-                </p>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center font-black text-base text-black">
+                  {currentUser.fullName.charAt(0)}
+                </div>
+                <div>
+                  <h3 className="font-black text-sm text-black leading-tight">{currentUser.fullName}</h3>
+                  <span className={`text-[10px] px-2 py-0.5 rounded ${activeRoleConfig.bg} ${activeRoleConfig.text} font-black inline-block mt-0.5`}>
+                    {activeRoleConfig.label}
+                  </span>
+                </div>
               </div>
               <button
                 onClick={() => setShowPersonaMenu(false)}
@@ -347,51 +394,51 @@ export default function Navbar({ initialUser }: NavbarProps) {
               </button>
             </div>
 
-            <div className="mt-4 space-y-2">
-              {allUsers.map((u) => {
-                const conf = roleBadgeColor[u.role] || roleBadgeColor.student;
-                const isSelected = currentUser?.id === u.id;
-                return (
-                  <button
-                    key={u.id}
-                    onClick={() => handleSwitchUser(u.id)}
-                    className={`w-full text-left p-3 rounded-xl flex items-center space-x-3 transition border-2 border-black shadow-[2.5px_2.5px_0px_#000] ${
-                      isSelected
-                        ? 'bg-[#FFE600] font-black'
-                        : 'bg-white hover:bg-[#FAF7EE]'
-                    }`}
-                  >
-                    <div className="w-9 h-9 rounded-xl bg-black text-white flex items-center justify-center font-black text-sm shrink-0">
-                      {u.fullName.charAt(0)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-black text-black truncate">{u.fullName}</p>
-                        <span className={`text-[10px] px-2 py-0.5 rounded ${conf.bg} ${conf.text} font-black`}>
-                          {conf.label}
-                        </span>
-                      </div>
-                      <p className="text-xs font-semibold text-neutral-700 truncate">
-                        {u.department || u.clinicCabin || u.rollNumber || u.email}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })}
+            {/* Profile Info Summary */}
+            <div className="py-4 space-y-2 text-xs">
+              <div className="flex items-center justify-between py-1.5 border-b border-neutral-200">
+                <span className="font-bold text-neutral-600">Email:</span>
+                <span className="font-mono font-bold text-black truncate max-w-[200px]">{currentUser.email}</span>
+              </div>
+              {currentUser.department && (
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-200">
+                  <span className="font-bold text-neutral-600">Department:</span>
+                  <span className="font-black text-black truncate max-w-[200px]">{currentUser.department}</span>
+                </div>
+              )}
+              {currentUser.clinicCabin && (
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-200">
+                  <span className="font-bold text-neutral-600">Clinic Cabin:</span>
+                  <span className="font-black text-black truncate max-w-[200px]">{currentUser.clinicCabin}</span>
+                </div>
+              )}
+              {currentUser.rollNumber && (
+                <div className="flex items-center justify-between py-1.5 border-b border-neutral-200">
+                  <span className="font-bold text-neutral-600">Roll Number:</span>
+                  <span className="font-mono font-black text-black">{currentUser.rollNumber}</span>
+                </div>
+              )}
             </div>
 
-            {/* Reset Seed Data Option */}
-            <div className="mt-4 pt-3 border-t-2 border-black flex items-center justify-between">
-              <span className="text-[11px] font-bold text-neutral-600">Demo Environment</span>
+            {/* Actions: Sign Out & Switch Account */}
+            <div className="pt-3 border-t-2 border-black space-y-2">
               <button
-                onClick={handleResetData}
-                disabled={isResetting}
-                title="Reset synthetic data to fresh seed state"
-                className="flex items-center space-x-1.5 bg-[#FB7185] hover:bg-rose-400 text-black font-black border-2 border-black px-2.5 py-1 rounded-lg shadow-[2px_2px_0px_#000] transition hover:-translate-y-0.5 text-xs"
+                type="button"
+                onClick={handleSignOut}
+                className="w-full flex items-center justify-center space-x-2 bg-[#FB7185] hover:bg-rose-400 text-black font-black border-2 border-black py-2.5 rounded-xl shadow-[3px_3px_0px_#000] text-xs transition active:translate-x-0.5 active:translate-y-0.5"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
-                <span>Reset Demo Data</span>
+                <LogOut className="w-4 h-4 text-black" />
+                <span>Sign Out of Campus</span>
               </button>
+
+              <Link
+                href="/login"
+                onClick={() => setShowPersonaMenu(false)}
+                className="w-full flex items-center justify-center space-x-1.5 bg-neutral-100 hover:bg-neutral-200 text-black font-bold border border-black py-1.5 rounded-lg shadow-[1px_1px_0px_#000] text-[11px] transition"
+              >
+                <LogIn className="w-3.5 h-3.5 text-black" />
+                <span>Switch Account (Go to Login)</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -426,6 +473,30 @@ export default function Navbar({ initialUser }: NavbarProps) {
                 <span>{item.label}</span>
               </Link>
             ))}
+          </div>
+
+          <div className="pt-2 border-t-2 border-black flex items-center space-x-2">
+            {currentUser ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleSignOut();
+                }}
+                className="w-full flex items-center justify-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-black text-black bg-[#FB7185] border-2 border-black shadow-[2px_2px_0px_#000]"
+              >
+                <LogOut className="w-4 h-4 text-black" />
+                <span>Sign Out ({currentUser.fullName})</span>
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-sm font-black text-black bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000]"
+              >
+                <LogIn className="w-4 h-4 text-black" />
+                <span>Sign In to Campus</span>
+              </Link>
+            )}
           </div>
         </div>
       )}

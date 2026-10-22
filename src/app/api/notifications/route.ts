@@ -22,7 +22,7 @@ export async function PATCH(req: NextRequest) {
     if (markAll) {
       await localDb.markAllNotificationsRead(user.id);
     } else if (notificationId) {
-      await localDb.markNotificationRead(notificationId);
+      await localDb.markNotificationRead(notificationId, user.id);
     }
 
     const notifications = await localDb.getNotifications(user.id);

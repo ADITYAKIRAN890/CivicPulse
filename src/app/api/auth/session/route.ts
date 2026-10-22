@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser, SESSION_COOKIE_NAME } from '@/lib/auth/session';
+import { getAuthenticatedUser, SESSION_COOKIE_NAME } from '@/lib/auth/session';
 import { localDb } from '@/lib/db/local-store';
 
 export async function GET() {
   try {
-    const user = await getCurrentUser();
-    return NextResponse.json({ success: true, user });
+    const user = await getAuthenticatedUser();
+    return NextResponse.json({
+      success: true,
+      user: user || null,
+      isAuthenticated: Boolean(user),
+    });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Failed to retrieve session';
     return NextResponse.json({ success: false, error: message }, { status: 500 });
