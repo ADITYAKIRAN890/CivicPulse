@@ -140,84 +140,49 @@ export default function Navbar({ initialUser }: NavbarProps) {
   const activeRoleConfig = currentUser ? roleBadgeColor[currentUser.role] : roleBadgeColor.student;
 
   const navLinks = [
-    { label: 'Campus Pulse', href: '/', icon: Building2 },
-    { label: 'Doctor Care', href: '/appointments', icon: Stethoscope },
-    { label: 'Complaints', href: '/complaints', icon: AlertTriangle },
-    { label: 'Civic Rewards', href: '/rewards', icon: Gift },
-    { label: 'People Database', href: '/people', icon: Users },
+    { label: 'Campus Pulse', shortLabel: 'Campus', href: '/', icon: Building2 },
+    { label: 'Doctor Care', shortLabel: 'Doctor Care', href: '/appointments', icon: Stethoscope },
+    { label: 'Complaints', shortLabel: 'Complaints', href: '/complaints', icon: AlertTriangle },
+    { label: 'Civic Rewards', shortLabel: 'Rewards', href: '/rewards', icon: Gift },
+    { label: 'People Database', shortLabel: 'People', href: '/people', icon: Users },
   ];
 
   // Role portal dynamic shortcuts
   const portalLinks = [
-    { label: 'Doctor Portal', href: '/doctor-portal', icon: Stethoscope, roles: ['doctor', 'administrator'] },
-    { label: 'Facilities Ops', href: '/department-portal', icon: Building2, roles: ['department_staff', 'administrator'] },
-    { label: 'Grievances', href: '/grievance-portal', icon: Shield, roles: ['grievance_officer', 'administrator', 'student'] },
-    { label: 'Canteen POS', href: '/canteen-pos', icon: Coffee, roles: ['canteen_operator', 'administrator'] },
-    { label: 'Admin Hub', href: '/admin', icon: UserCheck, roles: ['administrator'] },
+    { label: 'Doctor Dashboard', shortLabel: 'Doctor Hub', href: '/doctor/dashboard', icon: Stethoscope, roles: ['doctor', 'administrator'] },
+    { label: 'Facilities Ops', shortLabel: 'Facilities', href: '/department-portal', icon: Building2, roles: ['department_staff', 'administrator'] },
+    { label: 'Grievances', shortLabel: 'Grievances', href: '/grievance-portal', icon: Shield, roles: ['grievance_officer', 'administrator', 'student'] },
+    { label: 'Canteen POS', shortLabel: 'Canteen', href: '/canteen-pos', icon: Coffee, roles: ['canteen_operator', 'administrator'] },
+    { label: 'Admin Hub', shortLabel: 'Admin', href: '/admin', icon: UserCheck, roles: ['administrator'] },
   ];
 
   const visiblePortals = portalLinks.filter((p) => currentUser && p.roles.includes(currentUser.role));
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b-[3px] border-black shadow-[0_4px_0px_#000]">
-      {/* Top Demo Hackathon Bar */}
-      <div className="bg-[#FFE600] text-black text-xs px-4 py-1.5 flex flex-wrap items-center justify-between border-b-2 border-black font-bold">
-        <div className="flex items-center space-x-2">
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-black bg-black text-white border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
-            <span className="w-2 h-2 rounded-full bg-[#A3E635] animate-ping mr-1.5"></span>
-            HACKATHON EVALUATION MODE
-          </span>
-          <span className="hidden sm:inline text-black font-extrabold">
-            Civic Pulse
-          </span>
-        </div>
-        <div className="flex items-center space-x-3">
-          <span className="text-black font-black hidden md:inline">Current Persona:</span>
-          <button
-            onClick={() => setShowPersonaMenu(!showPersonaMenu)}
-            className="flex items-center space-x-1.5 bg-white hover:bg-neutral-100 px-2.5 py-1 rounded-lg border-2 border-black text-black font-bold shadow-[2px_2px_0px_#000] hover:-translate-y-0.5 transition"
-          >
-            <span className="font-black text-black">{currentUser?.fullName || 'Aarav Sharma'}</span>
-            <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeRoleConfig.bg} ${activeRoleConfig.text} font-black`}>
-              {activeRoleConfig.label}
-            </span>
-            <ChevronDown className="w-3.5 h-3.5 text-black" />
-          </button>
-          <button
-            onClick={handleResetData}
-            disabled={isResetting}
-            title="Reset synthetic data to fresh seed state"
-            className="flex items-center space-x-1 bg-[#FB7185] hover:bg-rose-400 text-black font-extrabold border-2 border-black px-2 py-1 rounded-lg shadow-[2px_2px_0px_#000] transition hover:-translate-y-0.5"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
-            <span className="hidden lg:inline text-[11px]">Reset Data</span>
-          </button>
-        </div>
-      </div>
 
       {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-5 lg:px-6">
+        <div className="flex items-center justify-between h-16 gap-1.5 sm:gap-3">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-xl bg-[#FFE600] border-[2.5px] border-black shadow-[3px_3px_0px_#000] flex items-center justify-center group-hover:bg-[#FFF066] transition">
-              <Sparkles className="w-6 h-6 text-black" />
+          <Link href="/" className="flex items-center space-x-2 sm:space-x-2.5 group shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FFE600] border-2 border-black shadow-[2px_2px_0px_#000] flex items-center justify-center group-hover:bg-[#FFF066] transition shrink-0">
+              <Sparkles className="w-5 h-5 text-black" />
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <span className="font-black text-2xl tracking-tight text-black">
-                  Civic<span className="bg-[#38BDF8] px-1.5 py-0.5 rounded border-2 border-black shadow-[2px_2px_0px_#000] ml-1">Pulse</span>
+                <span className="font-black text-lg sm:text-xl tracking-tight text-black">
+                  Civic<span className="bg-[#38BDF8] px-1.5 py-0.5 rounded border-2 border-black shadow-[1.5px_1.5px_0px_#000] ml-1">Pulse</span>
                 </span>
-                <span className="text-[10px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded bg-[#A3E635] text-black border-2 border-black shadow-[1.5px_1.5px_0px_#000]">
+                <span className="text-[9px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded bg-[#A3E635] text-black border-2 border-black shadow-[1px_1px_0px_#000]">
                   Campus
                 </span>
               </div>
-              <p className="text-[11px] font-bold text-neutral-700 leading-none">Smart Student Civic & Care Hub</p>
             </div>
           </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center space-x-2">
+          <nav className="hidden lg:flex items-center space-x-1 2xl:space-x-1.5 shrink-0">
             {navLinks.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -225,14 +190,15 @@ export default function Navbar({ initialUser }: NavbarProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-black transition ${
+                  className={`flex items-center space-x-1.5 px-2 2xl:px-2.5 py-1.5 rounded-lg text-xs 2xl:text-sm font-black whitespace-nowrap transition shrink-0 ${
                     isActive
-                      ? 'bg-[#FFE600] text-black border-2 border-black shadow-[3px_3px_0px_#000]'
+                      ? 'bg-[#FFE600] text-black border-2 border-black shadow-[2px_2px_0px_#000]'
                       : 'text-black hover:bg-[#FAF7EE] border-2 border-transparent hover:border-black hover:shadow-[2px_2px_0px_#000]'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.label}</span>
+                  <Icon className="w-4 h-4 shrink-0 text-black" />
+                  <span className="hidden 2xl:inline">{item.label}</span>
+                  <span className="inline 2xl:hidden">{item.shortLabel}</span>
                 </Link>
               );
             })}
@@ -245,29 +211,30 @@ export default function Navbar({ initialUser }: NavbarProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-sm font-black transition ${
+                  className={`flex items-center space-x-1.5 px-2 2xl:px-2.5 py-1.5 rounded-lg text-xs 2xl:text-sm font-black whitespace-nowrap transition shrink-0 ${
                     isActive
-                      ? 'bg-[#C084FC] text-black border-2 border-black shadow-[3px_3px_0px_#000]'
+                      ? 'bg-[#C084FC] text-black border-2 border-black shadow-[2px_2px_0px_#000]'
                       : 'bg-neutral-100 text-black border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-[#E9D5FF]'
                   }`}
                 >
-                  <Icon className="w-4 h-4 text-black" />
-                  <span>{item.label}</span>
+                  <Icon className="w-4 h-4 shrink-0 text-black" />
+                  <span className="hidden 2xl:inline">{item.label}</span>
+                  <span className="inline 2xl:hidden">{item.shortLabel}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Right Header Actions */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
             {/* Notification Bell */}
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 onClick={() => setShowNotifMenu(!showNotifMenu)}
-                className="relative p-2 rounded-xl bg-white border-2 border-black text-black shadow-[2.5px_2.5px_0px_#000] hover:bg-[#FFE600] transition"
+                className="relative p-2 rounded-xl bg-white border-2 border-black text-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] transition"
                 title="Notifications"
               >
-                <Bell className="w-5 h-5 text-black" />
+                <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                 {unreadNotifs.length > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#FB7185] border-2 border-black text-black text-[11px] font-black flex items-center justify-center shadow-[1px_1px_0px_#000]">
                     {unreadNotifs.length}
@@ -333,24 +300,26 @@ export default function Navbar({ initialUser }: NavbarProps) {
             {/* Persona Switcher Trigger Button */}
             <button
               onClick={() => setShowPersonaMenu(!showPersonaMenu)}
-              className="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white border-2 border-black shadow-[2.5px_2.5px_0px_#000] hover:bg-[#FFE600] transition"
+              className="flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-2.5 py-1.5 rounded-xl bg-white border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-[#FFE600] transition shrink-0"
+              title="Switch user role / profile"
             >
-              <div className="w-7 h-7 rounded-lg bg-[#FFE600] border-2 border-black flex items-center justify-center font-black text-xs text-black shadow-[1px_1px_0px_#000]">
+              <div className="w-7 h-7 rounded-lg bg-[#FFE600] border-2 border-black flex items-center justify-center font-black text-xs text-black shrink-0 shadow-[1px_1px_0px_#000]">
                 {currentUser?.fullName.charAt(0) || 'A'}
               </div>
-              <div className="text-left hidden lg:block">
-                <p className="text-xs font-black text-black leading-tight">{currentUser?.fullName}</p>
-                <p className="text-[10px] font-bold text-neutral-700">{activeRoleConfig.label}</p>
+              <div className="text-left hidden sm:flex flex-col justify-center min-w-0 max-w-[95px] xl:max-w-[125px]">
+                <p className="text-xs font-black text-black leading-tight truncate whitespace-nowrap">{currentUser?.fullName}</p>
+                <p className="text-[10px] font-bold text-neutral-600 leading-tight truncate whitespace-nowrap">{activeRoleConfig.label}</p>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-black" />
+              <ChevronDown className="w-3.5 h-3.5 text-black shrink-0" />
             </button>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl bg-white border-2 border-black shadow-[2px_2px_0px_#000] text-black"
+              className="lg:hidden p-2 rounded-xl bg-white border-2 border-black shadow-[2px_2px_0px_#000] text-black shrink-0"
+              aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -410,13 +379,27 @@ export default function Navbar({ initialUser }: NavbarProps) {
                 );
               })}
             </div>
+
+            {/* Reset Seed Data Option */}
+            <div className="mt-4 pt-3 border-t-2 border-black flex items-center justify-between">
+              <span className="text-[11px] font-bold text-neutral-600">Demo Environment</span>
+              <button
+                onClick={handleResetData}
+                disabled={isResetting}
+                title="Reset synthetic data to fresh seed state"
+                className="flex items-center space-x-1.5 bg-[#FB7185] hover:bg-rose-400 text-black font-black border-2 border-black px-2.5 py-1 rounded-lg shadow-[2px_2px_0px_#000] transition hover:-translate-y-0.5 text-xs"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
+                <span>Reset Demo Data</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b-[3px] border-black p-4 space-y-2">
+        <div className="lg:hidden bg-white border-b-[3px] border-black p-4 space-y-2">
           {navLinks.map((item) => (
             <Link
               key={item.href}

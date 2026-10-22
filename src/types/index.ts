@@ -30,6 +30,8 @@ export interface Doctor {
   bio: string;
   activeDays: string[]; // e.g., ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
   blockedDates: string[]; // ISO Date strings 'YYYY-MM-DD'
+  breakTimes?: string[]; // e.g., ['01:00 PM', '01:30 PM']
+  customSlots?: string[]; // Optional custom active slots
   avatarUrl?: string;
 }
 

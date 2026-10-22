@@ -200,12 +200,19 @@ export default function HomePage() {
                 Doctor directory, consultation slots, instant booking, and rescheduling with database concurrency protection against double-booking. Doctor dashboard handles schedule blocks and attendance. Strictly zero medical diagnosis storage.
               </p>
             </div>
-            <div className="pt-6">
+            <div className="pt-6 flex flex-wrap items-center gap-2">
               <Link
                 href="/appointments"
                 className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-black bg-[#38BDF8] text-black border-2 border-black shadow-[2.5px_2.5px_0px_#000] hover:bg-[#7DD3FC] transition"
               >
-                <span>Launch Doctor Hub</span>
+                <span>Student Booking Hub</span>
+                <ArrowRight className="w-3.5 h-3.5 text-black" />
+              </Link>
+              <Link
+                href="/doctor/dashboard"
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-black bg-[#A3E635] text-black border-2 border-black shadow-[2.5px_2.5px_0px_#000] hover:bg-lime-300 transition"
+              >
+                <span>Doctor Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5 text-black" />
               </Link>
             </div>

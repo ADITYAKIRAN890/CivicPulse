@@ -86,7 +86,9 @@ class LocalDatabase {
     try {
       if (fs.existsSync(this.dbPath)) {
         const fileContent = fs.readFileSync(this.dbPath, 'utf-8');
-        return JSON.parse(fileContent) as DatabaseSchema;
+        if (fileContent && fileContent.trim().length > 2) {
+          return JSON.parse(fileContent) as DatabaseSchema;
+        }
       }
     } catch (err) {
       console.warn('Failed to parse existing .civicspulse-data.json, re-initializing from seeds:', err);
@@ -361,11 +363,42 @@ class LocalDatabase {
     }
   }
 
+  async updateDoctorSchedule(
+    doctorId: string,
+    updates: {
+      consultationHours?: string;
+      activeDays?: string[];
+      blockedDates?: string[];
+      breakTimes?: string[];
+      customSlots?: string[];
+      bio?: string;
+      clinicCabin?: string;
+    }
+  ): Promise<Doctor> {
+    const release = await this.mutex.acquire();
+    try {
+      const doc = this.data.doctors.find((d) => d.id === doctorId);
+      if (!doc) throw new Error('Doctor not found');
+      if (updates.consultationHours !== undefined) doc.consultationHours = updates.consultationHours;
+      if (updates.activeDays !== undefined) doc.activeDays = updates.activeDays;
+      if (updates.blockedDates !== undefined) doc.blockedDates = updates.blockedDates;
+      if (updates.breakTimes !== undefined) doc.breakTimes = updates.breakTimes;
+      if (updates.customSlots !== undefined) doc.customSlots = updates.customSlots;
+      if (updates.bio !== undefined) doc.bio = updates.bio;
+      if (updates.clinicCabin !== undefined) doc.clinicCabin = updates.clinicCabin;
+      this.saveData(this.data);
+      return doc;
+    } finally {
+      release();
+    }
+  }
+
   async getAppointments(filters?: {
     doctorId?: string;
     studentId?: string;
     date?: string;
     status?: AppointmentStatus;
+    search?: string;
   }): Promise<Appointment[]> {
     let result = [...this.data.appointments];
     if (filters?.doctorId) {
@@ -380,8 +413,23 @@ class LocalDatabase {
     if (filters?.status) {
       result = result.filter((a) => a.status === filters.status);
     }
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      result = result.filter(
+        (a) =>
+          a.referenceCode.toLowerCase().includes(q) ||
+          a.studentName.toLowerCase().includes(q) ||
+          (a.studentRollNumber && a.studentRollNumber.toLowerCase().includes(q)) ||
+          a.reasonCategory.toLowerCase().includes(q) ||
+          (a.notes && a.notes.toLowerCase().includes(q))
+      );
+    }
     // Return sorted newest first
-    return result.sort((a, b) => new Date(b.date + ' ' + b.timeSlot).getTime() - new Date(a.date + ' ' + a.timeSlot).getTime());
+    return result.sort((a, b) => {
+      const dateA = a.date + ' ' + (a.timeSlot || '');
+      const dateB = b.date + ' ' + (b.timeSlot || '');
+      return dateB.localeCompare(dateA);
+    });
   }
 
   async getAppointmentById(id: string): Promise<Appointment | null> {
@@ -412,6 +460,11 @@ class LocalDatabase {
       // Check doctor blocked date
       if (doc.blockedDates.includes(params.date)) {
         throw new Error(`Doctor ${doc.fullName} is unavailable or on leave on ${params.date}.`);
+      }
+
+      // Check break times
+      if (doc.breakTimes && doc.breakTimes.includes(params.timeSlot)) {
+        throw new Error(`Time slot ${params.timeSlot} is reserved for doctor break/recess.`);
       }
 
       // Check double-booking race condition:
@@ -530,6 +583,15 @@ class LocalDatabase {
         throw new Error('Only the booking student or an administrator can cancel this appointment as student.');
       }
 
+      // Check permission: doctor actions can only be performed by assigned doctor or administrator
+      if (['in_consultation', 'completed', 'cancelled_by_doctor'].includes(newStatus)) {
+        const docRecord = this.data.doctors.find((d) => d.id === apt.doctorId);
+        const isAssignedDoctor = (docRecord && docRecord.userId === actor.id) || actor.id === apt.doctorId;
+        if (!isAssignedDoctor && actor.role !== 'administrator') {
+          throw new Error('Only the assigned doctor or an administrator can update consultation status.');
+        }
+      }
+
       apt.status = newStatus;
       if (reason) apt.cancellationReason = reason;
       apt.updatedAt = new Date().toISOString();
@@ -543,10 +605,10 @@ class LocalDatabase {
         id: `notif-${Date.now()}`,
         userId: recipientId,
         title: `Appointment Status: ${newStatus.replace(/_/g, ' ').toUpperCase()}`,
-        message: `Appointment ${apt.referenceCode} on ${apt.date} at ${apt.timeSlot} was updated to ${newStatus}. ${reason ? `Reason: ${reason}` : ''}`,
+        message: `Appointment ${apt.referenceCode} on ${apt.date} at ${apt.timeSlot} was updated to ${newStatus.replace(/_/g, ' ')}. ${reason ? `Reason: ${reason}` : ''}`,
         type: 'appointment',
         read: false,
-        link: actor.role === 'doctor' ? '/doctor-portal' : '/appointments',
+        link: actor.role === 'doctor' ? '/doctor/dashboard' : '/appointments',
         createdAt: new Date().toISOString(),
       });
 
@@ -568,13 +630,22 @@ class LocalDatabase {
       const apt = this.data.appointments.find((a) => a.id === appointmentId);
       if (!apt) throw new Error('Appointment not found.');
 
-      if (['completed', 'cancelled_by_student', 'cancelled_by_doctor'].includes(apt.status)) {
-        throw new Error(`Cannot reschedule an appointment that is already ${apt.status}.`);
+      const doc = this.data.doctors.find((d) => d.id === apt.doctorId);
+      const actor = this.data.users.find((u) => u.id === actorId);
+      const isStudent = actor?.id === apt.studentId;
+      const isDoctor = (doc && doc.userId === actor?.id) || actor?.id === apt.doctorId;
+      const isAdmin = actor?.role === 'administrator';
+
+      if (!isStudent && !isDoctor && !isAdmin) {
+        throw new Error('Unauthorized to reschedule this appointment.');
       }
 
-      const doc = this.data.doctors.find((d) => d.id === apt.doctorId);
       if (doc?.blockedDates.includes(newDate)) {
         throw new Error(`Doctor is unavailable on ${newDate}.`);
+      }
+
+      if (doc?.breakTimes && doc.breakTimes.includes(newTimeSlot)) {
+        throw new Error(`Time slot ${newTimeSlot} is reserved for doctor break/recess.`);
       }
 
       // Check conflict on new slot
@@ -596,14 +667,17 @@ class LocalDatabase {
       apt.status = 'confirmed';
       apt.updatedAt = new Date().toISOString();
 
+      const recipientId = isDoctor ? apt.studentId : (doc?.userId || apt.doctorId);
+      const initiator = isDoctor ? `Dr. ${doc?.fullName || apt.doctorName}` : (actor?.fullName || 'Student');
+
       this.data.notifications.push({
-        id: `notif-${Date.now()}`,
-        userId: apt.studentId,
+        id: `notif-${Date.now()}-resched`,
+        userId: recipientId,
         title: 'Appointment Rescheduled Successfully',
-        message: `Your appointment with ${apt.doctorName} has been moved to ${newDate} at ${newTimeSlot}.`,
+        message: `Your appointment with ${apt.doctorName} was rescheduled by ${initiator} to ${newDate} at ${newTimeSlot}.`,
         type: 'appointment',
         read: false,
-        link: '/appointments',
+        link: isDoctor ? '/appointments' : '/doctor/dashboard',
         createdAt: new Date().toISOString(),
       });
 

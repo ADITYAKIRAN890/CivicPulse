@@ -8,11 +8,25 @@ interface RouteContext {
 
 export async function GET(req: NextRequest, context: RouteContext) {
   try {
+    const user = await getCurrentUser();
     const { id } = await context.params;
     const appointment = await localDb.getAppointmentById(id);
     if (!appointment) {
       return NextResponse.json({ success: false, error: 'Appointment not found' }, { status: 404 });
     }
+
+    // Role-based privacy enforcement
+    if (user.role === 'student' && appointment.studentId !== user.id) {
+      return NextResponse.json({ success: false, error: 'Access forbidden: unauthorized' }, { status: 403 });
+    }
+    if (user.role === 'doctor') {
+      const doctors = await localDb.getDoctors();
+      const myDoctor = doctors.find((d) => d.userId === user.id);
+      if (myDoctor && appointment.doctorId !== myDoctor.id) {
+        return NextResponse.json({ success: false, error: 'Access forbidden: unauthorized' }, { status: 403 });
+      }
+    }
+
     return NextResponse.json({ success: true, appointment });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Error retrieving appointment';

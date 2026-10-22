@@ -57,6 +57,7 @@ export default function AppointmentsPage() {
   const [isBooking, setIsBooking] = useState(false);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [bookedSuccess, setBookedSuccess] = useState<Appointment | null>(null);
+  const [doctorReservedSlots, setDoctorReservedSlots] = useState<string[]>([]);
 
   // Reschedule Modal State
   const [reschedulingApt, setReschedulingApt] = useState<Appointment | null>(null);
@@ -101,21 +102,55 @@ export default function AppointmentsPage() {
     setTodayString(now.toISOString().split('T')[0]);
     setSelectedDate(new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
     loadData();
+
+    // Auto-sync polling every 8 seconds for two-way synchronization
+    const interval = setInterval(loadData, 8000);
+    return () => clearInterval(interval);
   }, []);
 
   const selectedDoctor = doctors.find((d) => d.id === selectedDoctorId) || doctors[0];
 
+  // Fetch live doctor reserved slots when doctor or date changes
+  useEffect(() => {
+    if (!selectedDoctorId || !selectedDate) return;
+    async function loadDoctorAvailability() {
+      try {
+        const res = await fetch(`/api/appointments?doctorId=${selectedDoctorId}&date=${selectedDate}&availabilityOnly=true`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.reservedSlots)) {
+          setDoctorReservedSlots(data.reservedSlots);
+        }
+      } catch (err) {
+        console.error('Failed to load doctor slot availability:', err);
+      }
+    }
+    loadDoctorAvailability();
+  }, [selectedDoctorId, selectedDate]);
+
   // Calculate which slots are already booked on selectedDate for selectedDoctor
-  const bookedSlotsOnDate = myAppointments
-    .filter(
-      (a) =>
-        a.doctorId === selectedDoctorId &&
-        a.date === selectedDate &&
-        !['cancelled_by_student', 'cancelled_by_doctor'].includes(a.status)
-    )
-    .map((a) => a.timeSlot);
+  const bookedSlotsOnDate = Array.from(
+    new Set([
+      ...doctorReservedSlots,
+      ...myAppointments
+        .filter(
+          (a) =>
+            a.doctorId === selectedDoctorId &&
+            a.date === selectedDate &&
+            !['cancelled_by_student', 'cancelled_by_doctor'].includes(a.status)
+        )
+        .map((a) => a.timeSlot),
+    ])
+  );
 
   const isDoctorBlockedOnDate = selectedDoctor?.blockedDates?.includes(selectedDate);
+  const selectedDayOfWeek = selectedDate
+    ? new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long' })
+    : '';
+  const isDoctorOffToday = Boolean(
+    selectedDoctor?.activeDays?.length &&
+    selectedDayOfWeek &&
+    !selectedDoctor.activeDays.includes(selectedDayOfWeek)
+  );
 
   const handleBookAppointment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -408,6 +443,12 @@ export default function AppointmentsPage() {
                     <span>Doctor is on leave or unavailable on this selected date. Please pick another date.</span>
                   </p>
                 )}
+                {isDoctorOffToday && !isDoctorBlockedOnDate && (
+                  <p className="text-xs text-black font-black mt-1.5 flex items-center space-x-1 bg-[#FFE600] p-2 rounded border border-black shadow-[2px_2px_0px_#000]">
+                    <AlertCircle className="w-4 h-4" />
+                    <span>Doctor does not consult on {selectedDayOfWeek}s. (Active days: {selectedDoctor?.activeDays?.join(', ') || 'N/A'}).</span>
+                  </p>
+                )}
               </div>
 
               {/* Time Slots Grid */}
@@ -415,21 +456,25 @@ export default function AppointmentsPage() {
                 <label className="block text-xs font-black text-black mb-2">
                   Available Consultation Slots ({selectedDate})
                 </label>
-                {isDoctorBlockedOnDate ? (
-                  <p className="text-xs text-neutral-600 font-bold italic">No slots available on doctor leave date.</p>
+                {isDoctorBlockedOnDate || isDoctorOffToday ? (
+                  <p className="text-xs text-neutral-600 font-bold italic">No slots available on doctor off/leave date.</p>
                 ) : (
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                     {TIME_SLOTS.map((slot) => {
                       const isBooked = bookedSlotsOnDate.includes(slot);
+                      const isBreak = selectedDoctor?.breakTimes?.includes(slot);
                       const isSelected = selectedTimeSlot === slot;
+                      const isDisabled = isBooked || isBreak;
                       return (
                         <button
                           key={slot}
                           type="button"
-                          disabled={isBooked}
+                          disabled={isDisabled}
                           onClick={() => setSelectedTimeSlot(slot)}
                           className={`py-2 px-3 rounded-lg text-xs font-black transition border-2 border-black shadow-[2.5px_2.5px_0px_#000] ${
-                            isBooked
+                            isBreak
+                              ? 'bg-[#FEF08A] text-neutral-600 cursor-not-allowed opacity-80'
+                              : isBooked
                               ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed line-through'
                               : isSelected
                               ? 'bg-[#FFE600] text-black shadow-[4px_4px_0px_#000]'
@@ -438,6 +483,7 @@ export default function AppointmentsPage() {
                         >
                           {slot}
                           {isBooked && <span className="block text-[9px] text-neutral-600 font-bold">Reserved</span>}
+                          {isBreak && <span className="block text-[9px] text-neutral-600 font-bold">Doctor Break</span>}
                         </button>
                       );
                     })}

@@ -11,8 +11,19 @@ export async function GET(req: NextRequest) {
     const studentId = searchParams.get('studentId');
     const date = searchParams.get('date');
     const status = searchParams.get('status') as any;
+    const search = searchParams.get('search');
+    const availabilityOnly = searchParams.get('availabilityOnly') === 'true';
 
-    let filters: { doctorId?: string; studentId?: string; date?: string; status?: any } = {};
+    // If querying public slot availability for a doctor on a specific date:
+    if (availabilityOnly && doctorId && date) {
+      const docApts = await localDb.getAppointments({ doctorId, date });
+      const reservedSlots = docApts
+        .filter((a) => !['cancelled_by_student', 'cancelled_by_doctor'].includes(a.status))
+        .map((a) => a.timeSlot);
+      return NextResponse.json({ success: true, reservedSlots });
+    }
+
+    let filters: { doctorId?: string; studentId?: string; date?: string; status?: any; search?: string } = {};
 
     if (user.role === 'student') {
       filters.studentId = user.id;
@@ -29,6 +40,7 @@ export async function GET(req: NextRequest) {
 
     if (date) filters.date = date;
     if (status) filters.status = status;
+    if (search) filters.search = search;
 
     const appointments = await localDb.getAppointments(filters);
     return NextResponse.json({ success: true, appointments });
